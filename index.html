@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Juegos de Celeste</title>
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="estilo.css">
+<style>
+  main{max-width:980px;margin:0 auto;padding:44px 18px 0;text-align:center}
+  .corner{position:fixed;width:min(40vw,260px);top:-8px;z-index:-1}
+  .corner.l{left:-18px}
+  .corner.r{right:-18px;transform:scaleX(-1)}
+  .eyebrow{font-family:var(--serif);letter-spacing:.3em;text-transform:uppercase;color:var(--rose-deep);font-size:.9rem}
+  h1.script{font-size:clamp(4.5rem,14vw,7.5rem)}
+  main>.versal{font-size:clamp(1.1rem,3vw,1.5rem);margin-top:-6px}
+  .juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:26px;margin:34px 0}
+  .juegos h2{font-size:2.6rem}
+  .juegos .lead{margin:6px auto 22px;max-width:30ch}
+  .juegos svg.ic{width:84px;height:84px;margin:0 auto 6px;display:block}
+  footer img{width:100%;max-width:900px;margin:-30px auto 0;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 35%);mask-image:linear-gradient(to bottom,transparent 0%,#000 35%)}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<img class="corner l blend" src="img/ramo.jpg" alt="">
+<img class="corner r blend" src="img/ramo.jpg" alt="">
+<main>
+  <p class="eyebrow">Baby Shower de</p>
+  <h1 class="script">Celeste</h1>
+  <p class="versal">Juegos</p>
+  <div class="juegos">
+    <section class="card">
+      <img class="flor blend" src="img/ramo.jpg" alt="">
+      <svg class="ic" aria-hidden="true"><use href="#i-estrella"></use></svg>
+      <p class="kicker">Para proyectar</p>
+      <h2 class="script">Bingo</h2>
+      <p class="lead">Cartones con figuras de bebé. Las fichas salen como letra y figura.</p>
+      <a class="btn" href="bingo/">Abrir el bingo</a>
+    </section>
+    <section class="card">
+      <img class="flor r blend" src="img/ramo.jpg" alt="">
+      <svg class="ic" aria-hidden="true"><use href="#i-corazon"></use></svg>
+      <p class="kicker">Con los celulares</p>
+      <h2 class="script">¿Quién conoce a Celeste?</h2>
+      <p class="lead">Preguntas en el televisor y respuestas desde el celular. Gana quien acierte más rápido.</p>
+      <a class="btn" href="trivia/pantalla.html">Abrir la trivia</a>
+    </section>
+  </div>
+</main>
+<footer><img class="blend" src="img/flores.jpg" alt=""></footer>
+<script src="iconos.js"></script>
+<script type="module">import { petalos } from './petalos.js'; petalos(document.getElementById('petals'));</script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+/* Sistema de diseño de los juegos: tomado de la invitación (babyshower-celeste). */
+@font-face{font-family:'Great Vibes';font-weight:400;font-display:swap;src:url(fonts/great-vibes-latin-400-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:500;font-display:swap;src:url(fonts/cormorant-garamond-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-weight:600;font-display:swap;src:url(fonts/cormorant-garamond-latin-600-normal.woff2) format('woff2')}
+@font-face{font-family:'Cormorant Garamond';font-style:italic;font-weight:500;font-display:swap;src:url(fonts/cormorant-garamond-latin-500-italic.woff2) format('woff2')}
+@font-face{font-family:'Quicksand';font-weight:500;font-display:swap;src:url(fonts/quicksand-latin-500-normal.woff2) format('woff2')}
+@font-face{font-family:'Quicksand';font-weight:600;font-display:swap;src:url(fonts/quicksand-latin-600-normal.woff2) format('woff2')}
+:root{
+  --paper:#fdfaf3;--card:#fefcf8;--blush:#f8e3e8;--blush-2:#f3d0da;--rose:#e6a3b6;--rose-deep:#c47590;--rose-ink:#9a5a70;
+  --gold:#d8b27a;--sage:#aebfa3;--sky:#9cc3da;--text:#7b5563;--muted:#a78893;
+  --script:'Great Vibes',cursive;--serif:'Cormorant Garamond',Georgia,serif;--sans:'Quicksand',system-ui,sans-serif;
+  color-scheme:light;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+[hidden]{display:none!important}
+body{font-family:var(--sans);color:var(--text);background:var(--paper);-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;font-variant-numeric:lining-nums}
+img{display:block;max-width:100%}
+.blend{mix-blend-mode:multiply}
+:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+
+.bg{position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(circle at 50% 30%,rgba(247,205,216,.35),transparent 45%),
+  radial-gradient(circle at 100% 50%,rgba(230,212,239,.4),transparent 35%),
+  radial-gradient(circle at 85% 70%,rgba(249,220,207,.45),transparent 38%),
+  radial-gradient(circle at 5% 80%,rgba(245,201,214,.45),transparent 40%),var(--paper)}
+.petals{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.petal{position:absolute;top:-30px;border-radius:150% 0 150% 0;opacity:.75;animation:fall linear infinite}
+@keyframes fall{0%{transform:translate(0,-20px) rotate(0)}50%{transform:translate(40px,50vh) rotate(180deg)}100%{transform:translate(-20px,105vh) rotate(360deg)}}
+.corner,.flor{pointer-events:none;-webkit-mask-image:radial-gradient(circle at 0 0,#000 45%,transparent 72%);mask-image:radial-gradient(circle at 0 0,#000 45%,transparent 72%)}
+
+.card{position:relative;background:var(--card);border:1px solid rgba(230,163,182,.4);border-radius:30px;padding:44px 22px 32px;text-align:center;overflow:hidden;box-shadow:0 18px 40px -28px rgba(154,90,112,.55)}
+.card::before{content:"";position:absolute;inset:8px;border:1px solid rgba(216,178,122,.3);border-radius:24px;pointer-events:none}
+.card>*{position:relative}
+.card>.flor{position:absolute;width:118px;top:-14px;left:-18px;opacity:.95}
+.card>.flor.r{left:auto;right:-18px;transform:scaleX(-1)}
+.kicker{font-size:.72rem;letter-spacing:.34em;text-transform:uppercase;color:var(--muted);line-height:1.6}
+.script{font-family:var(--script);font-weight:400;color:var(--rose-deep);line-height:1.1}
+.versal{font-family:var(--serif);font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--rose-ink)}
+.lead{font-family:var(--serif);font-size:1.18rem;line-height:1.55;color:var(--text)}
+.orn{display:flex;align-items:center;justify-content:center;gap:10px;margin:6px auto 18px;color:var(--rose)}
+.orn i{display:block;width:54px;height:1px;background:linear-gradient(90deg,transparent,var(--rose))}
+.orn i:last-child{background:linear-gradient(90deg,var(--rose),transparent)}
+.orn svg{width:18px;height:18px;fill:var(--rose)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;font-family:var(--sans);font-weight:600;font-size:.95rem;letter-spacing:.06em;
+  padding:14px 26px;border-radius:999px;border:0;cursor:pointer;text-decoration:none;min-height:48px;
+  background:linear-gradient(135deg,#e39ab0,#c46f8b);color:#fff;box-shadow:0 10px 20px -10px rgba(180,95,125,.85);transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:disabled{opacity:.5;cursor:default;transform:none}
+.btn.ghost{background:#fff;color:var(--rose-deep);border:1.5px solid var(--rose);box-shadow:none}
+input[type=text]{width:100%;font-family:var(--sans);font-size:16px;color:var(--text);background:#fff;border:1.5px solid var(--blush-2);border-radius:16px;padding:13px 16px;outline:none}
+input[type=text]:focus{border-color:var(--rose);box-shadow:0 0 0 4px rgba(230,163,182,.22)}
+.err{color:#bf4d6d;font-size:.9rem;min-height:1.2em}
+
+/* Opciones de respuesta: color + ícono (contraste AA) */
+.op0{--op:#a9566f;--op-txt:#fff}
+.op1{--op:#d8b27a;--op-txt:#4a3320}
+.op2{--op:#aebfa3;--op-txt:#2f3d2a}
+.op3{--op:#9cc3da;--op-txt:#24425a}
+.op{display:flex;align-items:center;gap:14px;background:var(--op);color:var(--op-txt);border:0;border-radius:22px;font-family:var(--sans);font-weight:600;text-align:left}
+.op svg{flex:none;background:rgba(255,255,255,.8);border-radius:50%;padding:6px}
+
+@media (prefers-reduced-motion:reduce){.petals{display:none}.btn{transition:none}}
