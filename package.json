@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node pruebas/logica.test.mjs",
+    "bots": "node pruebas/bots.mjs"
+  },
+  "devDependencies": {
+    "firebase": "10.12.2"
+  }
+}
