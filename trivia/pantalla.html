@@ -87,7 +87,7 @@ const CORAZON = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8.2
 const URL_JUEGO = new URL('./', location.href).href;
 const aviso = t => { $('aviso').textContent = t; };
 
-let juego = null, jugadores = {}, respuestas = {}, resultado = null, clave = null, cerrando = false, ultimoHtml = '', ultimoCambio = 0;
+let juego = null, jugadores = {}, respuestas = {}, resultado = null, clave = null, cerrando = false, ultimoHtml = '', ultimoCambio = 0, escuchando = false;
 let offRespuestas = () => {}, offResultado = () => {};
 
 petalos($('petals'));
@@ -108,9 +108,12 @@ document.addEventListener('keydown', e => {
 });
 
 onAuthStateChanged(auth, u => {
-  if (!u) return;
+  // Una sesión anónima es de jugador (p. ej. se abrió la página del celular en este navegador): el anfitrión debe entrar con Google.
+  if (!u || u.isAnonymous) { $('entrar').hidden = false; return; }
   $('entrar').hidden = true;
   if (u.uid !== ANFITRION) return aviso(`Tu uid es ${u.uid} — ponlo en config.js y en reglas.json`);
+  if (escuchando) return;
+  escuchando = true; aviso('');
   $('siguiente').hidden = $('reiniciar').hidden = false;
   onValue(ref(db, 'juego'), s => {
     const nuevo = s.val() || { estado: 'sala' };
