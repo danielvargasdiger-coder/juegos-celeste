@@ -10,14 +10,14 @@
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="estilo.css">
 <style>
-  main{max-width:980px;min-height:100svh;margin:0 auto;padding:clamp(20px,4vh,40px) 18px clamp(90px,17vh,170px);text-align:center;display:flex;flex-direction:column;justify-content:center}
+  main{max-width:1240px;min-height:100svh;margin:0 auto;padding:clamp(20px,4vh,40px) 18px clamp(90px,17vh,170px);text-align:center;display:flex;flex-direction:column;justify-content:center}
   .corner{position:fixed;width:min(40vw,260px);top:-8px;z-index:-1}
   .corner.l{left:-18px}
   .corner.r{right:-18px;transform:scaleX(-1)}
   .eyebrow{font-family:var(--serif);letter-spacing:.3em;text-transform:uppercase;color:var(--rose-deep);font-size:.9rem}
   h1.script{font-size:clamp(4.5rem,14vw,7.5rem)}
   main>.versal{font-size:clamp(1.1rem,3vw,1.5rem);margin-top:-6px}
-  .juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:26px;margin:34px 0}
+  .juegos{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:26px;margin:34px 0}
   .juegos h2{font-size:2.6rem}
   .juegos .lead{margin:6px auto 22px;max-width:30ch}
   .juegos svg.ic{width:84px;height:84px;margin:0 auto 6px;display:block}
@@ -48,6 +48,14 @@
       <h2 class="script">¿Quién conoce a Celeste?</h2>
       <p class="lead">Preguntas en el televisor y respuestas desde el celular. Gana quien acierte más rápido.</p>
       <a class="btn" href="trivia/pantalla.html">Abrir la trivia</a>
+    </section>
+    <section class="card">
+      <img class="flor blend" src="img/ramo.jpg" alt="">
+      <svg class="ic" aria-hidden="true"><use href="#i-luna"></use></svg>
+      <p class="kicker">Con los celulares</p>
+      <h2 class="script">El precio justo</h2>
+      <p class="lead">¿Cuánto cuestan las cosas de bebé? Gana quien quede más cerca sin pasarse.</p>
+      <a class="btn" href="precio/pantalla.html">Abrir el precio justo</a>
     </section>
   </div>
 </main>

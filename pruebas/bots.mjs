@@ -21,13 +21,13 @@ async function bot(i) {
   const db = getDatabase(app);
   const { user } = await signInAnonymously(getAuth(app));
   const uid = user.uid, registro = {};
-  await set(ref(db, 'jugadores/' + uid), { nombre: i % 10 === 0 ? 'María' : `Bot ${i}`, unido: serverTimestamp() });
+  await set(ref(db, 'jugadores/' + uid), { nombre: i % 10 === 0 ? 'María' : `Bot ${i}`, avatar: { i: i % 20, c: i % 10 }, unido: serverTimestamp() });
 
   if (i === 0) {
     await debeFallar('escribir mis propios puntos', set(ref(db, `jugadores/${uid}/puntos`), 99999));
-    await debeFallar('volver a crear mi jugador', set(ref(db, 'jugadores/' + uid), { nombre: 'Otro', unido: serverTimestamp() }));
+    await debeFallar('volver a crear mi jugador', set(ref(db, 'jugadores/' + uid), { nombre: 'Otro', avatar: { i: 0, c: 0 }, unido: serverTimestamp() }));
     await debeFallar('cambiar el estado del juego', set(ref(db, 'juego/estado'), 'final'));
-    await debeFallar('crear otro jugador', set(ref(db, 'jugadores/uid-ajeno'), { nombre: 'X', unido: serverTimestamp() }));
+    await debeFallar('crear otro jugador', set(ref(db, 'jugadores/uid-ajeno'), { nombre: 'X', avatar: { i: 0, c: 0 }, unido: serverTimestamp() }));
     await debeFallar('leer las respuestas de todos', get(ref(db, 'respuestas')));
   }
 

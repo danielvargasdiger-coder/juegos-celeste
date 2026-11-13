@@ -2,8 +2,9 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node pruebas/logica.test.mjs",
-    "bots": "node pruebas/bots.mjs"
+    "test": "node pruebas/logica.test.mjs && node pruebas/precio.test.mjs",
+    "bots": "node pruebas/bots.mjs",
+    "bots-precio": "node pruebas/bots-precio.mjs"
   },
   "devDependencies": {
     "firebase": "10.12.2"

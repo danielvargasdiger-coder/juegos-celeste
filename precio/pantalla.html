@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>El precio justo de la paternidad</title>
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="../favicon-32.png">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="../estilo.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  html,body{height:100%;overflow:hidden;user-select:none}
+  .tv{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(12px,2vh,28px) clamp(20px,3vw,56px);gap:clamp(10px,1.6vh,20px)}
+  .top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-left:clamp(110px,15vh,190px)}
+  .top h1{font-size:clamp(40px,7vh,80px)}
+  .top .kicker{font-size:clamp(11px,1.35vh,15px);font-weight:600;color:var(--rose-deep);letter-spacing:.3em}
+  .top .meta{font-weight:600;color:var(--muted);font-size:clamp(16px,2.4vh,26px);letter-spacing:.08em}
+  .corner{position:fixed;width:clamp(150px,22vh,260px);opacity:.95;z-index:-1}
+  .corner.tl{top:-10px;left:-10px}
+  .corner.br{bottom:-10px;right:-10px;transform:rotate(180deg)}
+  .escena{min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(12px,2.4vh,28px);text-align:center}
+  .escena .kicker{font-size:clamp(14px,2.2vh,24px)}
+  .grande{font-family:var(--serif);font-size:clamp(28px,5vh,60px);color:var(--rose-ink);line-height:1.2}
+  .sala{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;width:100%;max-width:1600px}
+  .qr{display:flex;flex-direction:column;align-items:center;background:var(--card);padding:clamp(14px,2vh,24px);border-radius:30px;border:1px solid rgba(230,163,182,.4);box-shadow:0 18px 40px -28px rgba(154,90,112,.55)}
+  .qr img,.qr canvas{width:clamp(220px,42vh,460px)!important;height:auto!important}
+  .url{font-weight:600;color:var(--rose-ink);font-size:clamp(16px,2.4vh,26px);margin-top:10px;word-break:break-all}
+  .lista{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-height:44vh;overflow:hidden;margin-top:clamp(10px,2vh,24px)}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:var(--blush);color:var(--rose-ink);border:0;border-radius:999px;padding:4px 16px 4px 4px;font:600 clamp(16px,2.4vh,26px) var(--sans)}
+  .sala .chip{cursor:pointer;font-size:clamp(13px,1.8vh,20px);padding:3px 12px 3px 3px}
+  .sala .lista{max-height:62vh;gap:8px}
+  .producto{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,4vw,72px);align-items:center;width:100%;max-width:1700px}
+  .foto{background:#fff;border-radius:30px;padding:clamp(10px,1.6vh,20px);box-shadow:0 0 0 1px rgba(230,163,182,.45),0 0 0 8px var(--card),0 0 0 9px rgba(216,178,122,.45),0 18px 40px -24px rgba(154,90,112,.6)}
+  .foto img{width:clamp(260px,58vh,640px);aspect-ratio:1;object-fit:contain}
+  .ficha{display:flex;flex-direction:column;align-items:center;gap:clamp(8px,1.4vh,16px)}
+  .nombre{font-family:var(--serif);font-weight:600;font-size:clamp(40px,7.4vh,88px);color:var(--rose-ink);line-height:1.05;text-wrap:balance}
+  .pres{font-family:var(--serif);font-style:italic;font-size:clamp(22px,3.6vh,40px)}
+  .pregunta{font-family:var(--script);color:var(--rose-deep);font-size:clamp(48px,9vh,110px);line-height:1.1}
+  .reloj{display:flex;align-items:center;gap:24px;font-weight:600;color:var(--rose-ink);font-size:clamp(20px,3vh,34px)}
+  .reloj b{font-family:var(--serif);font-size:clamp(52px,10vh,120px);min-width:2ch}
+  .doble{background:var(--gold);color:#4a3320;border-radius:999px;padding:2px 14px;letter-spacing:.1em}
+  .cuenta{font-family:var(--serif);font-weight:600;font-size:clamp(120px,24vh,280px);color:var(--rose-deep);line-height:1}
+  .revela{display:grid;grid-template-columns:auto minmax(0,1.3fr) minmax(0,1fr);grid-template-rows:auto auto auto;gap:clamp(12px,2vh,26px) clamp(20px,2.4vw,44px);width:100%;max-width:1800px;align-items:center}
+  .revela>.foto{grid-row:1/3}
+  .revela>.foto img{width:clamp(200px,44vh,480px)}
+  .revela>.ficha{grid-column:2/4}
+  .revela .podio-r{grid-column:2;align-self:stretch}
+  .revela .lado{grid-column:3;display:grid;gap:clamp(10px,1.6vh,18px);align-self:stretch}
+  .revela .dato{grid-column:1/4;font-family:var(--serif);font-style:italic;font-size:clamp(22px,3.6vh,40px);color:var(--rose-ink)}
+  .precio{font-family:var(--serif);font-weight:600;font-size:clamp(70px,14vh,170px);color:var(--rose-deep);line-height:1;animation:sube .6s cubic-bezier(.2,.9,.3,1.3)}
+  @keyframes sube{from{transform:scale(.6);opacity:0}}
+  .recta{position:relative;width:100%;height:clamp(50px,8vh,90px);border-radius:999px;background:linear-gradient(90deg,rgba(174,191,163,.25),rgba(191,77,109,.15))}
+  .recta i{position:absolute;width:clamp(12px,1.8vh,20px);aspect-ratio:1;border-radius:50%;transform:translate(-50%,-50%);opacity:.8}
+  .recta b{position:absolute;top:-8px;bottom:-8px;width:5px;transform:translateX(-50%);background:var(--gold);border-radius:3px;box-shadow:0 0 0 3px #fff}
+  .bien{--c:#6f9a5b} .mal{--c:#bf4d6d}
+  .recta i{background:var(--c)}
+  .leyenda{display:flex;gap:28px;font-weight:600;font-size:clamp(14px,2vh,22px)}
+  .leyenda span{display:flex;align-items:center;gap:8px;color:var(--c)}
+  .leyenda span::before{content:"";width:14px;height:14px;border-radius:50%;background:var(--c)}
+  .caja{background:var(--card);border:1px solid rgba(230,163,182,.45);border-radius:24px;padding:clamp(10px,1.6vh,18px) clamp(14px,1.6vw,24px);text-align:left}
+  .caja .kicker{font-size:clamp(12px,1.6vh,17px)!important;margin-bottom:6px}
+  .caja .v{font-family:var(--serif);font-weight:600;color:var(--rose-ink);font-size:clamp(24px,4vh,46px)}
+  .quien{display:flex;align-items:center;gap:12px;font-weight:600;font-size:clamp(18px,2.8vh,30px);color:var(--rose-ink)}
+  .cerca{display:grid;gap:clamp(6px,1vh,12px)}
+  .cerca li,.rank li{list-style:none;display:flex;align-items:center;gap:14px;font-weight:600;font-size:clamp(18px,2.8vh,32px);color:var(--rose-ink)}
+  .cerca .p,.rank .p{font-family:var(--serif);color:var(--rose-deep);min-width:1.4ch}
+  .cerca .v{margin-left:auto;font-size:1em}
+  .cerca .pts{font-family:var(--serif);color:var(--rose-deep);min-width:4ch;text-align:right}
+  .rank{display:grid;grid-template-columns:1fr 1fr;grid-auto-flow:column;grid-template-rows:repeat(5,auto);gap:clamp(8px,1.4vh,16px) 28px;width:min(1500px,100%)}
+  .rank li{background:var(--card);border:1px solid rgba(230,163,182,.4);border-radius:22px;padding:clamp(8px,1.3vh,14px) 24px;font-size:clamp(22px,3.4vh,38px)}
+  .rank .pts{margin-left:auto;font-family:var(--serif)}
+  .rank .av,.cerca .av,.quien .av{font-size:1.15em}
+  .cerca li>span:not([class]),.rank li>span:not([class]),.quien>span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+  .v,.pts{white-space:nowrap}
+  .podio{display:flex;align-items:flex-end;gap:clamp(16px,2vw,40px)}
+  .podio>div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:6px;width:clamp(200px,22vw,360px);border-radius:28px 28px 0 0;background:var(--blush);padding:20px;font-weight:600;font-size:clamp(20px,3.2vh,36px);color:var(--rose-ink)}
+  .podio .script{font-size:clamp(44px,8vh,100px)}
+  .podio .av{font-size:clamp(40px,7vh,84px)}
+  .podio .o1{height:44vh;background:linear-gradient(var(--blush),var(--blush-2))}
+  .podio .o2{height:35vh}
+  .podio .o3{height:28vh}
+  .host{display:flex;gap:12px;align-items:center;flex-wrap:wrap;opacity:.3;transition:opacity .2s}
+  .host:hover,.host:has(:focus-visible),.host:has(.aviso:not(:empty)){opacity:1}
+  .host .btn{min-height:40px;padding:8px 20px}
+  .aviso{font-weight:600;color:var(--rose-ink)}
+  .sep{flex:1}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<img class="corner tl blend" src="../img/ramo.jpg" alt="">
+<img class="corner br blend" src="../img/ramo.jpg" alt="">
+<div class="tv">
+  <header class="top"><div><p class="kicker">Baby Shower · 15 de noviembre</p><h1 class="script">El precio justo de la paternidad</h1></div><div class="meta" id="meta"></div></header>
+  <main class="escena" id="escena" aria-live="polite"><p class="grande">Entra con Google para preparar el juego</p></main>
+  <footer class="host">
+    <button class="btn ghost" id="entrar" type="button">Entrar con Google</button>
+    <button class="btn" id="siguiente" type="button" hidden>Empezar</button>
+    <span class="aviso" id="aviso" role="status"></span>
+    <span class="sep"></span>
+    <button class="btn ghost" id="reiniciar" type="button" hidden>Reiniciar y borrar datos</button>
+    <button class="btn ghost" id="completa" type="button">Pantalla completa</button>
+  </footer>
+</div>
+<script type="module">
+import { auth, db, ahora } from '../trivia/conexion.js';
+import { ANFITRION } from '../trivia/config.js';
+import { nombresVisibles } from '../trivia/logica.js';
+import { PRODUCTOS } from './productos-4b9e1d.js';
+import { cerrarRonda, DURACION } from './logica.js';
+import * as vistas from './vistas.js';
+import { petalos } from '../petalos.js';
+import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { ref, onValue, set, update, get, remove, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+const $ = id => document.getElementById(id);
+const R = p => ref(db, 'precio/' + p);
+const URL_JUEGO = new URL('./', location.href).href;
+const aviso = t => { $('aviso').textContent = t; };
+const fallo = err => aviso('Error: ' + (err.code || err.message));
+const SUSPENSO = 3000;
+
+let juego = null, jugadores = {}, respuestas = {}, resultado = null, clave = null, cerrando = false, ultimoHtml = '', ultimoCambio = 0, escuchando = false;
+let revelaDesde = 0, offRespuestas = () => {}, offResultado = () => {};
+
+petalos($('petals'));
+
+$('completa').onclick = () => document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen().catch(() => {});
+$('entrar').onclick = () => signInWithPopup(auth, new GoogleAuthProvider()).catch(e => aviso('No se pudo entrar: ' + e.code));
+$('siguiente').onclick = () => siguiente();
+$('reiniciar').onclick = () => {
+  if (!confirm('¿Borrar apodos, respuestas y puntajes del precio justo y volver a la sala?')) return;
+  update(ref(db, 'precio'), { jugadores: null, respuestas: null, resultados: null, juego: { estado: 'sala' } }).catch(fallo);
+};
+// Expulsar: en la sala, tocar el apodo de alguien lo saca (podrá volver a entrar con otro apodo).
+$('escena').addEventListener('click', e => {
+  const b = e.target.closest('.chip[data-uid]');
+  if (b && juego?.estado === 'sala' && confirm(`¿Sacar a «${b.textContent.trim()}» del juego?`)) remove(R('jugadores/' + b.dataset.uid)).catch(fallo);
+});
+// Los botones sueltan el foco al tocarlos: así la barra espaciadora siempre avanza el juego.
+document.querySelector('.host').addEventListener('click', e => e.target.closest('button')?.blur());
+document.addEventListener('keydown', e => {
+  if (e.key !== ' ' || $('siguiente').hidden) return;
+  e.preventDefault();
+  if (!e.repeat) siguiente();
+});
+
+onAuthStateChanged(auth, u => {
+  if (!u || u.isAnonymous) { $('entrar').hidden = false; return; }
+  $('entrar').hidden = true;
+  if (u.uid !== ANFITRION) return aviso(`Tu uid es ${u.uid}: no es el del anfitrión`);
+  if (escuchando) return;
+  escuchando = true; aviso('');
+  $('siguiente').hidden = $('reiniciar').hidden = false;
+  onValue(R('juego'), s => {
+    const nuevo = s.val() || { estado: 'sala' };
+    if (!juego || juego.estado !== nuevo.estado || juego.clave !== nuevo.clave) ultimoCambio = Date.now();
+    juego = nuevo; seguirRonda(); pintar();
+  });
+  onValue(R('jugadores'), s => { jugadores = s.val() || {}; pintar(); });
+});
+
+function seguirRonda() {
+  const c = ['ronda', 'revela', 'tabla'].includes(juego.estado) ? juego.clave : null;
+  if (c === clave) return;
+  offRespuestas(); offResultado();
+  clave = c; respuestas = {}; resultado = null; cerrando = false; revelaDesde = 0;
+  if (c == null) return;
+  offRespuestas = onValue(R(`respuestas/${c}`), s => { respuestas = s.val() || {}; pintar(); });
+  offResultado = onValue(R(`resultados/${c}`), s => { resultado = s.val(); pintar(); });
+}
+
+function abrir(i) {
+  const p = PRODUCTOS[i];
+  return set(R('juego'), {
+    estado: 'ronda', ronda: i, clave: String(i), total: PRODUCTOS.length, inicio: serverTimestamp(), duracion: DURACION,
+    doble: !!p.doble, nombre: p.nombre, presentacion: p.presentacion, foto: p.foto, dato: '',
+  });
+}
+
+// Cierra la ronda y calcula puntajes. También recupera el caso «se recargó la pantalla entre cerrar y calcular».
+async function cerrar() {
+  if (cerrando || !juego) return;
+  const { estado, clave: c, ronda: i, inicio, duracion } = juego;
+  if (estado !== 'ronda' && !(estado === 'revela' && !resultado)) return;
+  cerrando = true;
+  // Desde aquí las reglas rechazan respuestas nuevas. El dato curioso se publica solo al revelar.
+  if (estado === 'ronda') await update(R('juego'), { estado: 'revela', dato: PRODUCTOS[i].dato });
+  if ((await get(R(`resultados/${c}`))).exists()) return;                     // ya calculado: nunca sumar dos veces
+  const [r, j] = await Promise.all([get(R(`respuestas/${c}`)), get(R('jugadores'))]);
+  const { actualizacion } = cerrarRonda({ r: c, producto: PRODUCTOS[i], inicio, duracion, jugadores: j.val() || {}, respuestas: r.val() || {} });
+  await update(ref(db, 'precio'), actualizacion);
+}
+
+// Un doble clic o la barra sostenida no deben saltarse pantallas: tras cada cambio se ignoran 1,5 s.
+function siguiente() {
+  if (!juego || Date.now() - ultimoCambio < 1500) return;
+  const e = juego.estado, otra = err => { cerrando = false; fallo(err); };
+  if (e === 'sala') return abrir(0).catch(fallo);
+  if (e === 'ronda') return cerrar().catch(otra);
+  if (e === 'revela') return (resultado ? update(R('juego'), { estado: 'tabla' }) : cerrar()).catch(otra);
+  if (e === 'tabla') return (juego.ronda + 1 < PRODUCTOS.length ? abrir(juego.ronda + 1) : update(R('juego'), { estado: 'final' })).catch(fallo);
+}
+
+let sinResultadoDesde = 0;
+setInterval(() => {
+  if (!juego) return;
+  if (juego.estado === 'revela') {
+    if (!resultado) {                       // ronda cerrada sin puntajes (se recargó la pantalla): se recupera sola a los 4 s
+      sinResultadoDesde ||= Date.now();
+      if (Date.now() - sinResultadoDesde > 4000) cerrar().catch(err => { cerrando = false; fallo(err); });
+    } else pintar();                        // avanza la cuenta regresiva del suspenso
+    return;
+  }
+  sinResultadoDesde = 0;
+  if (juego.estado !== 'ronda') return;
+  const resta = juego.inicio + juego.duracion - ahora();
+  const n = Object.keys(jugadores).length;
+  if ($('seg')) $('seg').textContent = Math.max(0, Math.ceil(resta / 1000));
+  if (resta <= 0 || (n > 0 && Object.keys(respuestas).length >= n)) cerrar().catch(err => { cerrando = false; fallo(err); });
+}, 200);
+
+function pintar() {
+  if (!juego) return;
+  const e = juego.estado, n = Object.keys(jugadores).length, nombres = nombresVisibles(jugadores);
+  const ultima = juego.ronda + 1 >= PRODUCTOS.length;
+  const btn = $('siguiente');
+  btn.textContent = { sala: 'Empezar', ronda: 'Cerrar respuestas', revela: resultado ? 'Ver tabla' : 'Calcular puntajes',
+    tabla: ultima ? 'Ver podio' : 'Siguiente producto', final: 'Fin' }[e];
+  btn.disabled = e === 'final' || (e === 'sala' && n === 0);
+  $('meta').textContent = e === 'sala' || e === 'final' ? `${n} ${n === 1 ? 'jugador' : 'jugadores'}` : `Ronda ${juego.ronda + 1} de ${juego.total}`;
+  if (e === 'revela' && resultado && !revelaDesde) revelaDesde = Date.now();
+  const falta = revelaDesde ? SUSPENSO - (Date.now() - revelaDesde) : 0;
+  const html = vistas[e]({
+    juego, jugadores, nombres, resultado, url: URL_JUEGO, n, nr: Object.keys(respuestas).length,
+    seg: e === 'ronda' ? Math.max(0, Math.ceil((juego.inicio + juego.duracion - ahora()) / 1000)) : 0,
+    suspenso: falta > 0 ? Math.ceil(falta / 1000) : 0,
+  });
+  if (html === ultimoHtml) return;
+  ultimoHtml = html;
+  $('escena').innerHTML = html;
+  if (e === 'sala') new QRCode($('qr'), { text: URL_JUEGO, width: 460, height: 460, colorDark: '#9a5a70', colorLight: '#fefcf8', correctLevel: QRCode.CorrectLevel.M });
+  if (e === 'final') petalos($('petals'), 40);
+}
+</script>
+</body>
+</html>

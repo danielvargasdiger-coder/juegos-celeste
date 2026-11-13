@@ -28,7 +28,7 @@
   .escena .kicker{font-size:clamp(14px,2.2vh,24px)}
   .grande{font-family:var(--serif);font-size:clamp(28px,5vh,60px);color:var(--rose-ink);line-height:1.2}
   .lista{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;max-height:40vh;overflow:hidden}
-  .lista span{background:var(--blush);color:var(--rose-ink);border-radius:999px;padding:6px 16px;font-weight:600;font-size:clamp(16px,2.4vh,26px)}
+  .lista span{display:inline-flex;align-items:center;gap:8px;background:var(--blush);color:var(--rose-ink);border-radius:999px;padding:6px 16px;font-weight:600;font-size:clamp(16px,2.4vh,26px)}
   .texto{font-family:var(--serif);font-weight:600;font-size:clamp(34px,6.4vh,76px);color:var(--rose-ink);line-height:1.15;max-width:30ch;text-wrap:balance}
   .ops{display:grid;grid-template-columns:1fr 1fr;gap:clamp(10px,1.6vh,20px);width:100%;max-width:1700px}
   .ops .op{padding:clamp(14px,2.2vh,26px) clamp(18px,2vw,30px);font-size:clamp(22px,3.6vh,42px);min-height:clamp(80px,13vh,150px);transition:opacity .3s}
@@ -46,6 +46,7 @@
   .podio{display:flex;align-items:flex-end;gap:clamp(16px,2vw,40px)}
   .podio>div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;gap:8px;width:clamp(200px,22vw,360px);border-radius:28px 28px 0 0;background:var(--blush);padding:20px;font-weight:600;font-size:clamp(20px,3.2vh,36px);color:var(--rose-ink)}
   .podio .script{font-size:clamp(48px,9vh,110px)}
+  .podio .av{font-size:clamp(36px,6.5vh,76px)}
   .podio .o1{height:40vh;background:linear-gradient(var(--blush),var(--blush-2))}
   .podio .o2{height:31vh}
   .podio .o3{height:24vh}
@@ -80,6 +81,7 @@ import { ANFITRION } from './config.js';
 import { PREGUNTAS } from './preguntas-7f3a9c2e.js';
 import { cerrarPregunta, nombresVisibles, ordenar, DURACION } from './logica.js';
 import { petalos } from '../petalos.js';
+import { avatar } from '../avatar.js';
 import { GoogleAuthProvider, signInWithPopup, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
 import { ref, onValue, set, update, get, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
@@ -195,9 +197,9 @@ const htmlSala = nombres => `
     <div class="qr"><div id="qr"></div><div class="url">${esc(URL_JUEGO.replace(/^https?:\/\//, ''))}</div></div>
     <div>
       <p class="kicker">Escanea el código con tu celular</p>
-      <p class="grande">Escribe tu nombre y espera la primera pregunta</p>
+      <p class="grande">Escribe tu nombre, elige tu avatar y espera la primera pregunta</p>
       <div class="orn"><i></i>${CORAZON}<i></i></div>
-      <div class="lista">${Object.values(nombres).map(x => `<span>${esc(x)}</span>`).join('') || '<span>Aún no entra nadie</span>'}</div>
+      <div class="lista">${Object.entries(nombres).map(([uid, x]) => `<span>${avatar(jugadores[uid].avatar)}${esc(x)}</span>`).join('') || '<span>Aún no entra nadie</span>'}</div>
     </div>
   </div>`;
 
@@ -213,13 +215,13 @@ function htmlPregunta() {
     <div class="reloj">${pie}${juego.doble ? '<span class="doble">Vale doble</span>' : ''}</div>`;
 }
 
-const fila = (uid, puesto, nombres) => `<li><span class="p">${puesto}</span><span>${esc(nombres[uid])}</span><span class="pts">${jugadores[uid].puntos || 0}</span></li>`;
+const fila = (uid, puesto, nombres) => `<li><span class="p">${puesto}</span>${avatar(jugadores[uid].avatar)}<span>${esc(nombres[uid])}</span><span class="pts">${jugadores[uid].puntos || 0}</span></li>`;
 const htmlRanking = nombres => `<p class="kicker">Así van</p><ol class="rank">${ordenar(jugadores).slice(0, 5).map((uid, i) => fila(uid, i + 1, nombres)).join('')}</ol>`;
 function htmlFinal(nombres) {
   const o = ordenar(jugadores);
   const podio = [1, 0, 2].filter(i => o[i]).map(i =>
-    `<div class="o${i + 1}"><span class="script">${i + 1}</span><span>${esc(nombres[o[i]])}</span><span>${jugadores[o[i]].puntos || 0}</span></div>`).join('');
-  const resto = o.slice(3, 10).map((uid, i) => `<span>${i + 4}. ${esc(nombres[uid])}</span>`).join('');
+    `<div class="o${i + 1}">${avatar(jugadores[o[i]].avatar)}<span class="script">${i + 1}</span><span>${esc(nombres[o[i]])}</span><span>${jugadores[o[i]].puntos || 0}</span></div>`).join('');
+  const resto = o.slice(3, 10).map((uid, i) => `<span>${i + 4}. ${avatar(jugadores[uid].avatar)}${esc(nombres[uid])}</span>`).join('');
   return `<p class="kicker">¡Ganadores!</p><div class="podio">${podio}</div><div class="lista">${resto}</div>`;
 }
 

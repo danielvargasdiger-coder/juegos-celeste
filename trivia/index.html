@@ -14,7 +14,7 @@
   .cel h1.script{font-size:clamp(4rem,22vw,6rem)}
   .cel h2.script{font-size:2.6rem}
   .cel .versal{font-size:1rem;margin-top:-4px}
-  form{display:grid;gap:10px;text-align:left;margin-top:8px}
+  form{display:grid;grid-template-columns:minmax(0,1fr);gap:10px;text-align:left;margin-top:8px}
   label{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-left:6px}
   .cab{display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--muted);font-size:.9rem;letter-spacing:.06em}
   .cab b{font-family:var(--serif);font-size:2.4rem;color:var(--rose-deep);line-height:1}
@@ -24,6 +24,7 @@
   .ops .op svg{width:44px;height:44px}
   .ops .op:active{transform:scale(.98)}
   .total{margin-top:14px}
+  .av-sel{display:grid;gap:10px;background:var(--blush);border-radius:20px;padding:12px}
   #red{text-align:center}
 </style>
 </head>
@@ -41,7 +42,9 @@
     <div class="orn"><i></i><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7L12 16l-6.3 4.3 2.3-7-6-4.4h7.6z"/></svg><i></i></div>
     <form id="form" novalidate>
       <label for="nombre">Tu nombre</label>
-      <input id="nombre" type="text" maxlength="20" autocomplete="given-name" placeholder="Ej. Tía Marta">
+      <input id="nombre" type="text" maxlength="20" autocomplete="off" placeholder="Ej. Tía Marta">
+      <label>Tu animalito: elige uno y su color</label>
+      <div id="avatar" class="av-sel"></div>
       <p class="err" id="err" role="alert"></p>
       <button class="btn" id="entrar" type="submit">Entrar al juego</button>
     </form>
@@ -50,6 +53,7 @@
   <section class="card" id="v-espera" hidden>
     <img class="flor r blend" src="../img/ramo.jpg" alt="">
     <p class="kicker">¡Ya estás dentro!</p>
+    <div class="av-ver" id="mi-av"></div>
     <h2 class="script" id="saludo"></h2>
     <div class="orn"><i></i><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8.2 3.2 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.6 0 5.8 3.7 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg><i></i></div>
     <p class="lead">Mira el televisor: la pregunta sale en un momento.</p>
@@ -92,8 +96,9 @@
 import { auth, db, ahora } from './conexion.js';
 import { normalizar } from './logica.js';
 import { petalos } from '../petalos.js';
+import { avatar, selectorAvatar } from '../avatar.js';
 import { signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
-import { ref, onValue, set, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+import { ref, onValue, set, serverTimestamp, goOffline } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
 
 const $ = id => document.getElementById(id);
 const ICONOS = ['corazon', 'estrella', 'luna', 'nube'];
@@ -106,6 +111,7 @@ let uid = null, juego = null, yo = null, yoCargado = false, mia = null, resultad
 let enviando = false, rechazada = false, pintada = null, conectado = false, festejo = false, offs = [];
 
 petalos($('petals'), 10);
+const miAvatar = selectorAvatar($('avatar'));
 
 signInAnonymously(auth).catch(e => {
   $('red').textContent = e.code === 'auth/too-many-requests'
@@ -145,11 +151,11 @@ function pintar() {
   if (!yoCargado || !juego) return;
   if (!yo) return ver('nombre');
   const e = juego.estado;
-  if (e === 'sala') { $('saludo').textContent = yo.nombre; return ver('espera'); }
+  if (e === 'sala') { $('saludo').textContent = yo.nombre; $('mi-av').innerHTML = avatar(yo.avatar); return ver('espera'); }
   if (e === 'final') {
     $('f-puesto').textContent = yo.puesto ? `¡Quedaste de ${yo.puesto}.º!` : '¡Gracias por jugar!';
     $('f-puntos').textContent = `${yo.puntos || 0} puntos`;
-    if (!festejo) { festejo = true; petalos($('petals'), 24); }
+    if (!festejo) { festejo = true; petalos($('petals'), 24); setTimeout(() => goOffline(db), 3000); }   // libera la conexión para el siguiente juego
     return ver('final');
   }
   if (e === 'pregunta') {
@@ -179,7 +185,7 @@ $('form').addEventListener('submit', ev => {
   const nombre = normalizar($('nombre').value);
   if (!nombre) { $('err').textContent = 'Escribe tu nombre para jugar'; return; }
   $('err').textContent = ''; $('entrar').disabled = true;
-  set(ref(db, 'jugadores/' + uid), { nombre, unido: serverTimestamp() })
+  set(ref(db, 'jugadores/' + uid), { nombre, avatar: miAvatar(), unido: serverTimestamp() })
     .catch(() => { $('err').textContent = 'No se pudo entrar. Intenta de nuevo.'; })
     .finally(() => { $('entrar').disabled = false; });
 });
