@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../estilo.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  html,body{height:100%;overflow:hidden}
+  html,body{height:100%;overflow:hidden;user-select:none}
   .tv{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(12px,2vh,28px) clamp(20px,3vw,56px);gap:clamp(10px,1.6vh,20px)}
   .top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-left:clamp(110px,15vh,190px)}
   .top h1{font-size:clamp(40px,7vh,84px)}
@@ -156,8 +156,17 @@ function siguiente() {
   if (e === 'ranking') return (juego.pregunta + 1 < PREGUNTAS.length ? abrir(juego.pregunta + 1) : update(ref(db, 'juego'), { estado: 'final' })).catch(fallo);
 }
 
+let sinResultadoDesde = 0;
 setInterval(() => {
-  if (!juego || juego.estado !== 'pregunta') return;
+  if (!juego) return;
+  // Pregunta cerrada sin puntajes (la pantalla se recargó mientras calculaba): se recupera sola a los 4 s.
+  if (juego.estado === 'respuesta' && !resultado) {
+    sinResultadoDesde ||= Date.now();
+    if (Date.now() - sinResultadoDesde > 4000) cerrar().catch(err => { cerrando = false; aviso('Error al calcular: ' + (err.code || err.message)); });
+    return;
+  }
+  sinResultadoDesde = 0;
+  if (juego.estado !== 'pregunta') return;
   const resta = juego.inicio + juego.duracion - ahora();
   const n = Object.keys(jugadores).length;
   const seg = $('seg');
