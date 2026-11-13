@@ -11,7 +11,8 @@
   html,body{height:100%;overflow:hidden;user-select:none}
   .tv{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;padding:clamp(12px,2vh,28px) clamp(20px,3vw,56px);gap:clamp(10px,1.6vh,20px)}
   .top{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-left:clamp(110px,15vh,190px)}
-  .top h1{font-size:clamp(40px,7vh,84px)}
+  .top h1{font-size:clamp(40px,7vh,80px)}
+  .top .kicker{font-size:clamp(11px,1.35vh,15px);font-weight:600;color:var(--rose-deep);letter-spacing:.3em}
   .top .meta{font-weight:600;color:var(--muted);font-size:clamp(16px,2.4vh,26px);letter-spacing:.08em}
   .corner{position:fixed;width:clamp(150px,22vh,260px);opacity:.95;z-index:-1}
   .corner.tl{top:-10px;left:-10px}
@@ -58,7 +59,7 @@
 <img class="corner tl blend" src="../img/ramo.jpg" alt="">
 <img class="corner br blend" src="../img/ramo.jpg" alt="">
 <div class="tv">
-  <header class="top"><h1 class="script">¿Quién conoce a Celeste?</h1><div class="meta" id="meta"></div></header>
+  <header class="top"><div><p class="kicker">Baby Shower · 15 de noviembre</p><h1 class="script">¿Quién conoce a Celeste?</h1></div><div class="meta" id="meta"></div></header>
   <main class="escena" id="escena" aria-live="polite"><p class="grande">Entra con Google para preparar el juego</p></main>
   <footer class="host">
     <button class="btn ghost" id="entrar" type="button">Entrar con Google</button>

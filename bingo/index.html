@@ -5,20 +5,25 @@
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Great+Vibes&family=Quicksand:wght@500;600;700&display=swap">
 <style>
 /* Layout para televisor 16:9. Arriba: título y figura de la ronda. Izquierda: la ficha que salió. Derecha: tablero B-I-N-G-O con íconos que crecen para llenar el espacio. Abajo: controles del anfitrión, tenues hasta pasar el mouse. Un solo look (papelería de la invitación), sin modo oscuro. */
 :root{
-  --paper:#fdfaf3; --card:#fffdf9; --blush:#f8e3e8; --rose-soft:#f3c9d3;
-  --rose:#b4546f; --rose-mid:#d98fa5; --rose-alt:#e292aa; --gold:#c29f81; --gold-soft:#efe1cc;
-  --ink:#6b3c4f; --muted:#8a5a6c; --ok:#4f7a54; --ok-soft:#e3eee1; --no:#a5483f; --no-soft:#f6e2df;
+  /* Paleta de la invitación (babyshower-celeste) */
+  --paper:#fdfaf3; --card:#fefcf8; --blush:#f8e3e8; --rose-soft:#f3d0da;
+  --rose:#c47590; --rose-mid:#e6a3b6; --rose-alt:#e39ab0; --gold:#d8b27a; --gold-soft:#efe1cc;
+  --ink:#9a5a70; --muted:#a78893; --ok:#4f7a54; --ok-soft:#e3eee1; --no:#a5483f; --no-soft:#f6e2df;
   --display:'Great Vibes','Brush Script MT',cursive;
   --serif:'Cormorant Garamond','Garamond','Georgia',serif;
+  --sans:'Quicksand',system-ui,sans-serif;
+  --marco:0 18px 40px -28px rgba(154,90,112,.55),inset 0 0 0 7px var(--card),inset 0 0 0 8px rgba(216,178,122,.38);
   color-scheme:light;
 }
 [hidden]{display:none!important}
 html,body{height:100%}
-body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif);font-weight:500;
+body{margin:0;color:var(--ink);
+  background:radial-gradient(circle at 50% 30%,rgba(247,205,216,.35),transparent 45%),radial-gradient(circle at 100% 50%,rgba(230,212,239,.4),transparent 35%),
+    radial-gradient(circle at 85% 70%,rgba(249,220,207,.45),transparent 38%),radial-gradient(circle at 5% 80%,rgba(245,201,214,.45),transparent 40%),var(--paper);background-attachment:fixed;font-family:var(--serif);font-weight:500;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));box-sizing:border-box}
 *{box-sizing:border-box}
 button,input{font-family:inherit}
@@ -35,7 +40,7 @@ button{cursor:pointer}
 .kicker{font-size:clamp(11px,1.35vh,15px);letter-spacing:.3em;text-transform:uppercase;font-weight:700;color:var(--rose)}
 h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(40px,7vh,80px);line-height:1;color:var(--rose);text-wrap:balance}
 .brand .meta{display:flex;flex-direction:column;gap:2px;min-width:0}
-.round{display:flex;align-items:center;gap:clamp(12px,1.4vw,22px);background:var(--card);border:1.5px solid var(--gold-soft);border-radius:20px;padding:clamp(8px,1.2vh,14px) clamp(16px,1.8vw,28px) clamp(8px,1.2vh,14px) clamp(10px,1.2vw,18px);min-width:0}
+.round{display:flex;align-items:center;gap:clamp(12px,1.4vw,22px);background:var(--card);border:1px solid rgba(230,163,182,.4);box-shadow:var(--marco);border-radius:24px;padding:clamp(8px,1.2vh,14px) clamp(16px,1.8vw,28px) clamp(8px,1.2vh,14px) clamp(10px,1.2vw,18px);min-width:0}
 .round .mini{flex:none;display:grid;grid-template-columns:repeat(5,1fr);gap:3px;width:clamp(56px,9vh,96px)}
 .round .mini i{aspect-ratio:1;border-radius:3px;background:var(--gold-soft)}
 .round .mini i.on{background:var(--rose)}
@@ -45,8 +50,8 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(40px,7vh,
 
 /* Escenario: la ficha que acaba de salir */
 .left{min-width:0;min-height:0;display:flex;flex-direction:column;gap:clamp(8px,1.2vh,14px)}
-.stage{position:relative;flex:1;min-height:0;background:var(--card);border:1.5px solid var(--gold-soft);border-radius:22px;
-  box-shadow:inset 0 0 0 6px var(--card),inset 0 0 0 7.5px var(--rose-soft);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(16px,3vh,36px)}
+.stage{position:relative;flex:1;min-height:0;background:var(--card);border:1px solid rgba(230,163,182,.4);border-radius:30px;
+  box-shadow:var(--marco);overflow:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:clamp(16px,3vh,36px)}
 .stage .flor{position:absolute;width:clamp(120px,22vh,230px);pointer-events:none;mix-blend-mode:multiply;opacity:.95;-webkit-mask-image:radial-gradient(circle at 0 0,#000 52%,transparent 74%);mask-image:radial-gradient(circle at 0 0,#000 52%,transparent 74%)}
 .stage .flor.a{left:0;top:0}
 .stage .flor.b{right:0;bottom:0;transform:scale(-1,-1)}
@@ -75,7 +80,7 @@ h1{margin:0;font-family:var(--display);font-weight:400;font-size:clamp(40px,7vh,
 .chip svg{width:clamp(28px,4vh,42px);height:clamp(28px,4vh,42px)}
 
 /* Tablero: los íconos crecen para llenar el espacio (fitBoard) */
-.panel{background:var(--card);border:1.5px solid var(--gold-soft);border-radius:18px;padding:clamp(10px,1.6vh,18px) clamp(12px,1.4vw,20px);display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);min-width:0}
+.panel{background:var(--card);border:1px solid rgba(230,163,182,.4);box-shadow:var(--marco);border-radius:26px;padding:clamp(10px,1.6vh,18px) clamp(12px,1.4vw,20px);display:flex;flex-direction:column;gap:clamp(6px,1vh,12px);min-width:0}
 .ptitle{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
 h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:uppercase;font-weight:700;color:var(--rose)}
 .ptitle .n{font-size:clamp(16px,2.4vh,26px);font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums}
@@ -93,11 +98,11 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
 /* Barra del anfitrión: tenue en el televisor, se aclara al pasar el mouse */
 .hostbar{grid-column:1/-1;display:flex;gap:10px 14px;align-items:center;flex-wrap:nowrap;white-space:nowrap;min-width:0;opacity:.3;transition:opacity .2s}
 .hostbar:hover,.hostbar:has(:focus-visible),.hostbar:has(.confirm),.hostbar:has(.err:not([hidden])){opacity:1}
-.btn{border:0;border-radius:14px;min-height:44px;padding:8px 20px;font-size:clamp(16px,2vh,21px);font-weight:700;letter-spacing:.02em}
-.btn.primary{background:var(--rose);color:#fff;box-shadow:0 4px 0 #8f3f56}
-.btn.primary:active{transform:translateY(2px);box-shadow:0 2px 0 #8f3f56}
-.btn.primary:disabled{background:var(--rose-mid);box-shadow:none;cursor:default}
-.btn.ghost{background:transparent;color:var(--rose);border:1.5px solid var(--rose-soft)}
+.btn{border:0;border-radius:999px;min-height:44px;padding:8px 22px;font-size:clamp(15px,1.9vh,19px);font-weight:600;letter-spacing:.05em;transition:transform .2s}
+.btn.primary{background:linear-gradient(135deg,#e39ab0,#c46f8b);color:#fff;box-shadow:0 10px 20px -10px rgba(180,95,125,.85)}
+.btn.primary:hover{transform:translateY(-2px)}
+.btn.primary:disabled{opacity:.5;box-shadow:none;cursor:default;transform:none}
+.btn.ghost{background:#fff;color:var(--rose);border:1.5px solid var(--rose-mid)}
 .btn.ghost:disabled{opacity:.45;cursor:default}
 .kbd{font-size:.7em;opacity:.8;font-weight:600;margin-left:6px}
 @media (max-width:1600px){.kbd{display:none}.hostbar{gap:8px}.hostbar .btn{padding-inline:14px}}
@@ -113,11 +118,18 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
 .host{font-size:15px;color:var(--muted);font-weight:600}
 .host b{color:var(--ink);font-variant-numeric:tabular-nums}
 
+/* Estilo de la invitación: textos de interfaz en Quicksand y pétalos cayendo */
+.kicker,h2,.btn,.link,.hostbar,.chip,.prev .t,.ptitle .n,.round .hint,.big .label,.big .rule,.badge,.claim,.err,.host,.verdict p,.vc span,.brow .figs .none{font-family:var(--sans)}
+.kicker,h2,.big .label,.prev .t{font-weight:600}
+.lluvia{position:fixed;inset:0;pointer-events:none;z-index:5;overflow:hidden}
+.lluvia span{position:absolute;top:-30px;border-radius:150% 0 150% 0;opacity:.75;animation:caer linear infinite}
+@keyframes caer{0%{transform:translate(0,-20px) rotate(0)}50%{transform:translate(40px,50vh) rotate(180deg)}100%{transform:translate(-20px,105vh) rotate(360deg)}}
+
 /* Verificación */
 .overlay{position:fixed;inset:0;z-index:20;background:rgba(253,250,243,.95);display:flex;align-items:center;justify-content:center;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));overflow:auto}
 .vbox{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(16px,3vw,48px);align-items:center;max-width:1320px;width:100%}
-.vcard{background:var(--card);border:2px solid var(--rose-mid);border-radius:20px;box-shadow:inset 0 0 0 6px var(--card),inset 0 0 0 7.5px var(--rose-soft);padding:clamp(12px,2vh,22px);display:flex;flex-direction:column;align-items:center;gap:8px}
+.vcard{background:var(--card);border:1px solid rgba(230,163,182,.55);border-radius:30px;box-shadow:var(--marco);padding:clamp(12px,2vh,22px);display:flex;flex-direction:column;align-items:center;gap:8px}
 .vcard .ttl{font-family:var(--display);font-size:clamp(28px,4.5vh,46px);color:var(--rose);line-height:1}
 .vgrid{display:grid;grid-template-columns:repeat(5,clamp(52px,14vh,150px));gap:6px}
 .vgrid .h{height:clamp(30px,5vh,48px);border-radius:10px 10px 0 0;background:var(--rose-mid);color:#fff;font-weight:700;font-size:clamp(20px,3.4vh,32px);display:flex;align-items:center;justify-content:center}
@@ -167,6 +179,7 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
   .vcard{width:100%;max-width:480px}
 }
 @media (prefers-reduced-motion:reduce){
+  .lluvia{display:none}
   .big.land{animation:none}
   .petal{display:none}
 }
@@ -396,6 +409,7 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
 <path d="M50 34 C36 10 18 18 28 30 C34 36 46 34 50 34 Z M50 34 C64 10 82 18 72 30 C66 36 54 34 50 34 Z" fill="#f5e3ae"/>
 </g></symbol></defs></svg>
 
+<div class="lluvia" id="lluvia" aria-hidden="true"></div>
 <div class="app" id="app">
   <header class="head">
     <div class="brand">
@@ -820,6 +834,16 @@ function askReset() {
   $('resetNo').addEventListener('click', back);
 }
 
+function lluvia() {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const cols = ['#f2b6c8', '#eea3b9', '#f7cdb9', '#e8c6ee', '#f9d9e2'];
+  for (let i = 0; i < 16; i++) {
+    const p = document.createElement('span'), s = 8 + Math.random() * 9;
+    p.style.cssText = `left:${Math.random() * 100}%;width:${s}px;height:${s * 1.15}px;background:${cols[i % 5]};animation-duration:${11 + Math.random() * 10}s;animation-delay:${-Math.random() * 18}s`;
+    $('lluvia').appendChild(p);
+  }
+}
+
 function start(data) {
   const s = (data && Array.isArray(data.drawn) && data.drawn.every(b => POOL.includes(b))) ? data : load();
   if (s) state = {drawn: s.drawn.slice(), pattern: PATTERNS.some(p => p.id === s.pattern) ? s.pattern : 'linea'};
@@ -827,6 +851,7 @@ function start(data) {
   renderPatterns();
   renderBoard();
   showBig(state.drawn[state.drawn.length - 1], false);
+  lluvia();
   bind();
 }
 window.claude?.hot?.snapshot?.(() => state);

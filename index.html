@@ -7,7 +7,7 @@
 <meta name="robots" content="noindex">
 <link rel="stylesheet" href="estilo.css">
 <style>
-  main{max-width:980px;margin:0 auto;padding:44px 18px 0;text-align:center}
+  main{max-width:980px;min-height:100svh;margin:0 auto;padding:clamp(20px,4vh,40px) 18px clamp(90px,17vh,170px);text-align:center;display:flex;flex-direction:column;justify-content:center}
   .corner{position:fixed;width:min(40vw,260px);top:-8px;z-index:-1}
   .corner.l{left:-18px}
   .corner.r{right:-18px;transform:scaleX(-1)}
@@ -18,7 +18,6 @@
   .juegos h2{font-size:2.6rem}
   .juegos .lead{margin:6px auto 22px;max-width:30ch}
   .juegos svg.ic{width:84px;height:84px;margin:0 auto 6px;display:block}
-  footer img{width:100%;max-width:900px;margin:-30px auto 0;-webkit-mask-image:linear-gradient(to bottom,transparent 0%,#000 35%);mask-image:linear-gradient(to bottom,transparent 0%,#000 35%)}
 </style>
 </head>
 <body>
@@ -49,7 +48,7 @@
     </section>
   </div>
 </main>
-<footer><img class="blend" src="img/flores.jpg" alt=""></footer>
+<div class="prado" aria-hidden="true"></div>
 <script src="iconos.js"></script>
 <script type="module">import { petalos } from './petalos.js'; petalos(document.getElementById('petals'));</script>
 </body>
