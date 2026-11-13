@@ -21,7 +21,7 @@
   .foto{background:#fff;border-radius:24px;padding:8px;box-shadow:0 0 0 1px rgba(230,163,182,.45)}
   .foto img{width:100%;max-height:34svh;object-fit:contain}
   .nombre{font-family:var(--serif);font-weight:600;font-size:1.7rem;color:var(--rose-ink);line-height:1.15;text-align:center}
-  .pres{font-family:var(--serif);font-style:italic;text-align:center;margin-top:-10px}
+  .pres{font-family:var(--serif);font-style:italic;text-align:center;margin-top:-8px;line-height:1.3}
   #precio{font-family:var(--serif);font-weight:600;font-size:2.2rem;text-align:center;color:var(--rose-ink);padding:10px 16px}
   .doble{background:var(--gold);color:#4a3320;border-radius:999px;padding:2px 10px;font-size:.8rem}
   .total{margin-top:14px}
@@ -118,7 +118,7 @@ const R = p => ref(db, 'precio/' + p);
 const VISTAS = ['cargando', 'nombre', 'espera', 'ronda', 'listo', 'tarde', 'revela', 'resultado', 'final'];
 const ver = v => VISTAS.forEach(x => { $('v-' + x).hidden = x !== v; });
 
-let uid = null, juego = null, yo = null, yoCargado = false, mia = null, clave = null;
+let uid = null, juego = null, yo = null, yoCargado = false, mia = null, clave = null, real = null;
 let enviando = null, rechazada = false, pintada = null, conectado = false, festejo = false, offs = [];
 
 petalos($('petals'), 10);
@@ -144,9 +144,10 @@ function seguir() {
   const c = ['ronda', 'revela', 'tabla'].includes(juego.estado) ? juego.clave : null;
   if (c === clave) return;
   offs.forEach(f => f()); offs = [];
-  clave = c; mia = null; enviando = null; rechazada = false;
+  clave = c; mia = null; enviando = null; rechazada = false; real = null;
   if (c == null) return;
   offs.push(onValue(R(`respuestas/${c}/${uid}`), s => { mia = s.val(); pintar(); }));
+  offs.push(onValue(R(`resultados/${c}/real`), s => { real = s.val(); pintar(); }));
 }
 
 function pintarRonda() {
@@ -182,7 +183,7 @@ function pintar() {
   const u = yo.ultima;
   if (!u || u.ronda !== juego.clave) return ver('tarde');
   $('r-titulo').textContent = u.precio < 0 ? 'Sin respuesta' : u.puntos > 0 ? `+${u.puntos} puntos` : '¡Te pasaste!';
-  $('r-detalle').textContent = u.precio < 0 ? 'No alcanzaste a enviar tu precio.' : `Dijiste ${pesos(u.precio)}.`;
+  $('r-detalle').textContent = (u.precio < 0 ? 'No alcanzaste a enviar tu precio.' : `Dijiste ${pesos(u.precio)}.`) + (real ? ` Costaba ${pesos(real)}.` : '');
   $('r-total').textContent = `${yo.puntos || 0} puntos · vas ${yo.puesto}.º`;
   ver('resultado');
 }
