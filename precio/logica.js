@@ -10,7 +10,7 @@ export function puntosPrecio(precio, real, doble) {
   return base * (doble ? 2 : 1);
 }
 
-export const pesos = n => '$ ' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+export const pesos = n => '$\u00a0' + String(Math.round(n)).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 export const leerPrecio = txt => +(String(txt).replace(/\D/g, '').slice(0, 8) || 0);
 
 const lejania = f => Math.max(f.precio / f.real, f.real / f.precio);

@@ -16,11 +16,12 @@ assert.equal(puntosPrecio(null, 100000, true), 0);               // no respondi√
 assert.equal(puntosPrecio(1000, 4599900, false), 0);             // redondea a 0, no negativo
 
 // Formato y lectura de precios
-assert.equal(pesos(85000), '$ 85.000');
-assert.equal(pesos(4599900), '$ 4.599.900');
-assert.equal(pesos(1000), '$ 1.000');
-assert.equal(pesos(950), '$ 950');
+assert.equal(pesos(85000).replace('\u00a0', ' '), '$ 85.000');
+assert.equal(pesos(4599900).replace('\u00a0', ' '), '$ 4.599.900');
+assert.equal(pesos(1000).replace('\u00a0', ' '), '$ 1.000');
+assert.equal(pesos(950).replace('\u00a0', ' '), '$ 950');
 assert.equal(leerPrecio('$ 85.000'), 85000);
+assert.equal(leerPrecio(pesos(4599900)), 4599900);         // el campo del celular se relee bien
 assert.equal(leerPrecio('85,000'), 85000);
 assert.equal(leerPrecio('abc'), 0);
 assert.equal(leerPrecio('9'.repeat(20)), 99999999);              // se corta a 8 cifras

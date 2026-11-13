@@ -75,4 +75,14 @@ input[type=text]:focus{border-color:var(--rose);box-shadow:0 0 0 4px rgba(230,16
 .av-colores button{border-radius:50%;box-shadow:inset 0 0 0 1px rgba(154,90,112,.3)}
 .av-iconos [aria-pressed=true],.av-colores [aria-pressed=true]{border-color:var(--rose-deep);box-shadow:0 0 0 3px rgba(230,163,182,.4)}
 
+/* Pantallas del celular (main.cel): todo apilado con aire entre líneas, letra grande y nada encimado */
+.cel>section{display:grid;gap:14px}
+.cel .card{justify-items:center;gap:12px;padding:34px 20px 30px}
+.cel .script{line-height:1.3;padding:0 .1em;overflow-wrap:anywhere}
+.cel .kicker{font-size:.78rem}
+.cel .lead{font-size:1.28rem;line-height:1.5}
+.cel .versal{font-size:1.05rem;line-height:1.5}
+.cel .orn{margin:0 auto}
+.cel form{width:100%}
+
 @media (prefers-reduced-motion:reduce){.petals{display:none}.btn{transition:none}}
