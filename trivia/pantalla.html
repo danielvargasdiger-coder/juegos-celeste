@@ -87,7 +87,7 @@ const CORAZON = '<svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8.2
 const URL_JUEGO = new URL('./', location.href).href;
 const aviso = t => { $('aviso').textContent = t; };
 
-let juego = null, jugadores = {}, respuestas = {}, resultado = null, clave = null, cerrando = false, ultimoHtml = '';
+let juego = null, jugadores = {}, respuestas = {}, resultado = null, clave = null, cerrando = false, ultimoHtml = '', ultimoCambio = 0;
 let offRespuestas = () => {}, offResultado = () => {};
 
 petalos($('petals'));
@@ -99,8 +99,12 @@ $('reiniciar').onclick = () => {
   if (!confirm('¿Borrar jugadores, respuestas y puntajes y volver a la sala?')) return;
   update(ref(db), { jugadores: null, respuestas: null, resultados: null, juego: { estado: 'sala' } }).catch(e => aviso('Error al reiniciar: ' + e.code));
 };
+// Los botones sueltan el foco al tocarlos: así la barra espaciadora siempre avanza el juego y no repite el último botón.
+document.querySelector('.host').addEventListener('click', e => e.target.closest('button')?.blur());
 document.addEventListener('keydown', e => {
-  if (e.key === ' ' && e.target.tagName !== 'BUTTON' && !$('siguiente').hidden) { e.preventDefault(); siguiente(); }
+  if (e.key !== ' ' || $('siguiente').hidden) return;
+  e.preventDefault();
+  if (!e.repeat) siguiente();
 });
 
 onAuthStateChanged(auth, u => {
@@ -108,7 +112,11 @@ onAuthStateChanged(auth, u => {
   $('entrar').hidden = true;
   if (u.uid !== ANFITRION) return aviso(`Tu uid es ${u.uid} — ponlo en config.js y en reglas.json`);
   $('siguiente').hidden = $('reiniciar').hidden = false;
-  onValue(ref(db, 'juego'), s => { juego = s.val() || { estado: 'sala' }; seguirPregunta(); pintar(); });
+  onValue(ref(db, 'juego'), s => {
+    const nuevo = s.val() || { estado: 'sala' };
+    if (!juego || juego.estado !== nuevo.estado || juego.clave !== nuevo.clave) ultimoCambio = Date.now();
+    juego = nuevo; seguirPregunta(); pintar();
+  });
   onValue(ref(db, 'jugadores'), s => { jugadores = s.val() || {}; pintar(); });
 });
 
@@ -146,8 +154,9 @@ async function cerrar() {
   await update(ref(db), actualizacion);
 }
 
+// Un doble clic o la barra sostenida no deben abrir y cerrar una pregunta de golpe: tras cada cambio de pantalla se ignoran 1,5 s.
 function siguiente() {
-  if (!juego) return;
+  if (!juego || Date.now() - ultimoCambio < 1500) return;
   const e = juego.estado;
   const fallo = err => aviso('Error: ' + (err.code || err.message));
   if (e === 'sala') return abrir(0).catch(fallo);

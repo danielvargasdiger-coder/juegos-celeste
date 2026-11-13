@@ -104,7 +104,11 @@ let enviando = false, rechazada = false, pintada = null, conectado = false, fest
 
 petalos($('petals'), 10);
 
-signInAnonymously(auth).catch(() => { $('red').textContent = 'No pudimos conectarte. Revisa tus datos móviles y recarga la página.'; });
+signInAnonymously(auth).catch(e => {
+  $('red').textContent = e.code === 'auth/too-many-requests'
+    ? 'Se llenó el cupo de conexiones nuevas. Avísale al anfitrión.'   // recargar no ayuda: es el límite de cuentas anónimas de Firebase
+    : 'No pudimos conectarte. Revisa tus datos móviles y recarga la página.';
+});
 onAuthStateChanged(auth, u => {
   if (!u || uid) return;
   uid = u.uid;
