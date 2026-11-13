@@ -4,8 +4,11 @@ import { PRODUCTOS } from '../precio/productos-4b9e1d.js';
 
 assert.equal(DURACION, 40000);
 
-// Puntaje: 0 si se pasa; 1000 × precio / real; +500 si queda a 2 % o menos por debajo; ×2 en la final
-assert.equal(puntosPrecio(100001, 100000, false), 0);            // se pasó por $ 1
+// Puntaje: 1000 × precio / real; +500 si queda a 2 % o menos por debajo; pasarse da máximo 500 (500 × real / precio); ×2 en la final
+assert.equal(puntosPrecio(100001, 100000, false), 500);          // se pasó por $ 1
+assert.equal(puntosPrecio(250000, 100000, false), 200);          // se pasó al doble y medio
+assert.equal(puntosPrecio(250000, 100000, true), 400);
+assert.equal(puntosPrecio(50000000, 55000, false), 1);           // locura total: casi nada, pero no 0
 assert.equal(puntosPrecio(100000, 100000, false), 1500);         // exacto: 1000 + bono
 assert.equal(puntosPrecio(98000, 100000, false), 1480);          // justo en el 2 %: 980 + 500
 assert.equal(puntosPrecio(97999, 100000, false), 980);           // apenas fuera del 2 %
@@ -54,7 +57,7 @@ assert.deepEqual(res.alejada, { uid: 'd', precio: 5000 });
 assert.deepEqual(res.precios.slice().sort((x, y) => x - y), [5000, 90000, 90000, 250000]);
 assert.equal(r.actualizacion['jugadores/b/puntos'], 1000);
 assert.equal(r.actualizacion['jugadores/b/tiempo'], 2050);
-assert.deepEqual(r.actualizacion['jugadores/c/ultima'], { ronda: '0', precio: 250000, puntos: 0 });
+assert.deepEqual(r.actualizacion['jugadores/c/ultima'], { ronda: '0', precio: 250000, puntos: 200 });
 assert.deepEqual(r.actualizacion['jugadores/e/ultima'], { ronda: '0', precio: -1, puntos: 0 });
 assert.equal(r.actualizacion['jugadores/e/tiempo'], DURACION);    // no respondió: suma el tiempo completo
 assert.equal(r.actualizacion['jugadores/b/puesto'], 1);           // 1000 puntos

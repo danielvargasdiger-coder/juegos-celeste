@@ -178,8 +178,9 @@ function pintar() {
   // tabla: el resultado de esta ronda ya se reveló en el televisor
   const u = yo.ultima;
   if (!u || u.ronda !== juego.clave) return ver('tarde');
-  $('r-titulo').textContent = u.precio < 0 ? 'Sin respuesta' : u.puntos > 0 ? `+${u.puntos} puntos` : '¡Te pasaste!';
-  $('r-detalle').textContent = (u.precio < 0 ? 'No alcanzaste a enviar tu precio.' : `Dijiste ${pesos(u.precio)}.`) + (real ? ` Costaba ${pesos(real)}.` : '');
+  $('r-titulo').textContent = u.precio < 0 ? 'Sin respuesta' : `+${u.puntos} puntos`;
+  $('r-detalle').textContent = u.precio < 0 ? 'No alcanzaste a enviar tu precio.'
+    : (real && u.precio > real ? 'Te pasaste. ' : '') + `Dijiste ${pesos(u.precio)}.` + (real ? ` Costaba ${pesos(real)}.` : '');
   $('r-total').textContent = `${yo.puntos || 0} puntos · vas ${yo.puesto}.º`;
   ver('resultado');
 }

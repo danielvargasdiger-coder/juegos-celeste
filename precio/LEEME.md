@@ -19,9 +19,9 @@ Juego del baby shower de Celeste. En el televisor sale un producto de bebé y ca
 
 ## Puntaje
 
-- Si te pasas del precio: 0.
 - Si no te pasas: 1000 × tu precio ÷ precio real.
 - Bono de +500 si quedas a 2 % o menos por debajo.
+- Si te pasas: máximo 500, y menos entre más te pases (500 × precio real ÷ tu precio). Nadie se queda en 0 si respondió.
 - La última ronda (el coche UPPAbaby) vale doble.
 - Empate en la ronda: gana quien respondió primero. Empate en la tabla: gana quien sumó menos tiempo.
 

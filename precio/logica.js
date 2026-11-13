@@ -4,9 +4,11 @@ import { ordenar } from '../trivia/logica.js';
 export const DURACION = 40000;
 export const MIN = 1000, MAX = 50000000;   // también en reglas.json
 
+// Por debajo: 1000 × precio / real (+500 si queda a 2 % o menos). Pasarse: máximo 500 y menos entre más se pase.
 export function puntosPrecio(precio, real, doble) {
-  if (precio == null || precio > real) return 0;
-  const base = Math.round(1000 * precio / real) + (real - precio <= real * 0.02 ? 500 : 0);
+  if (precio == null) return 0;
+  const base = precio > real ? Math.round(500 * real / precio)
+    : Math.round(1000 * precio / real) + (real - precio <= real * 0.02 ? 500 : 0);
   return base * (doble ? 2 : 1);
 }
 
