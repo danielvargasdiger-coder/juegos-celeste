@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>¿Quién conoce a Celeste?</title>
+<meta name="theme-color" content="#f8e3e8">
+<link rel="stylesheet" href="../estilo.css">
+<style>
+  .cel{max-width:520px;margin:0 auto;padding:18px 16px 40px;min-height:100svh;display:flex;flex-direction:column;justify-content:center;gap:16px}
+  .cel h1.script{font-size:clamp(4rem,22vw,6rem)}
+  .cel h2.script{font-size:2.6rem}
+  .cel .versal{font-size:1rem;margin-top:-4px}
+  form{display:grid;gap:10px;text-align:left;margin-top:8px}
+  label{font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);padding-left:6px}
+  .cab{display:flex;justify-content:space-between;align-items:center;font-weight:600;color:var(--muted);font-size:.9rem;letter-spacing:.06em}
+  .cab b{font-family:var(--serif);font-size:2.4rem;color:var(--rose-deep);line-height:1}
+  .texto{font-family:var(--serif);font-weight:600;font-size:1.6rem;color:var(--rose-ink);line-height:1.25;text-align:center}
+  .ops{display:grid;gap:12px}
+  .ops .op{width:100%;min-height:64px;padding:12px 16px;font-size:1.1rem;cursor:pointer}
+  .ops .op svg{width:44px;height:44px}
+  .ops .op:active{transform:scale(.98)}
+  .total{margin-top:14px}
+  #red{text-align:center}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<main class="cel">
+  <section class="card" id="v-cargando"><p class="lead">Conectando…</p></section>
+
+  <section class="card" id="v-nombre" hidden>
+    <img class="flor blend" src="../img/ramo.jpg" alt="">
+    <p class="kicker">Baby Shower de</p>
+    <h1 class="script">Celeste</h1>
+    <p class="versal">¿Quién la conoce?</p>
+    <div class="orn"><i></i><svg viewBox="0 0 24 24"><path d="M12 2l2.4 6.9H22l-6 4.4 2.3 7L12 16l-6.3 4.3 2.3-7-6-4.4h7.6z"/></svg><i></i></div>
+    <form id="form" novalidate>
+      <label for="nombre">Tu nombre</label>
+      <input id="nombre" type="text" maxlength="20" autocomplete="given-name" placeholder="Ej. Tía Marta">
+      <p class="err" id="err" role="alert"></p>
+      <button class="btn" id="entrar" type="submit">Entrar al juego</button>
+    </form>
+  </section>
+
+  <section class="card" id="v-espera" hidden>
+    <img class="flor r blend" src="../img/ramo.jpg" alt="">
+    <p class="kicker">¡Ya estás dentro!</p>
+    <h2 class="script" id="saludo"></h2>
+    <div class="orn"><i></i><svg viewBox="0 0 24 24"><path d="M12 21s-7.5-4.6-9.5-9.3C1 8.2 3.2 4.5 6.8 4.5c2.1 0 3.6 1.2 5.2 3 1.6-1.8 3.1-3 5.2-3 3.6 0 5.8 3.7 4.3 7.2C19.5 16.4 12 21 12 21z"/></svg><i></i></div>
+    <p class="lead">Mira el televisor: la pregunta sale en un momento.</p>
+  </section>
+
+  <section id="v-pregunta" hidden>
+    <div class="cab"><span id="p-num"></span><b id="seg"></b></div>
+    <p class="texto" id="texto"></p>
+    <div class="ops" id="ops"></div>
+  </section>
+
+  <section class="card" id="v-listo" hidden>
+    <h2 class="script">¡Listo!</h2>
+    <p class="lead">Espera el resultado en el televisor.</p>
+  </section>
+
+  <section class="card" id="v-tarde" hidden>
+    <h2 class="script">Se acabó el tiempo</h2>
+    <p class="lead">Prepárate para la siguiente.</p>
+  </section>
+
+  <section class="card" id="v-resultado" hidden>
+    <h2 class="script" id="r-titulo"></h2>
+    <p class="lead" id="r-detalle"></p>
+    <p class="versal total" id="r-total"></p>
+  </section>
+
+  <section class="card" id="v-final" hidden>
+    <img class="flor blend" src="../img/ramo.jpg" alt="">
+    <p class="kicker">Resultado final</p>
+    <h2 class="script" id="f-puesto"></h2>
+    <p class="versal" id="f-puntos"></p>
+    <p class="lead">Gracias por jugar en el baby shower de Celeste.</p>
+  </section>
+
+  <p class="err" id="red" role="status"></p>
+</main>
+<script src="../iconos.js"></script>
+<script type="module">
+import { auth, db, ahora } from './conexion.js';
+import { normalizar } from './logica.js';
+import { petalos } from '../petalos.js';
+import { signInAnonymously, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js';
+import { ref, onValue, set, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.12.2/firebase-database.js';
+
+const $ = id => document.getElementById(id);
+const ICONOS = ['corazon', 'estrella', 'luna', 'nube'];
+const icono = i => `<svg aria-hidden="true"><use href="#i-${ICONOS[i]}"></use></svg>`;
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+const VISTAS = ['cargando', 'nombre', 'espera', 'pregunta', 'listo', 'tarde', 'resultado', 'final'];
+const ver = v => VISTAS.forEach(x => { $('v-' + x).hidden = x !== v; });
+
+let uid = null, juego = null, yo = null, yoCargado = false, mia = null, resultado = null, clave = null;
+let enviando = false, rechazada = false, pintada = null, conectado = false, festejo = false, offs = [];
+
+petalos($('petals'), 10);
+
+signInAnonymously(auth).catch(() => { $('red').textContent = 'No pudimos conectarte. Revisa tus datos móviles y recarga la página.'; });
+onAuthStateChanged(auth, u => {
+  if (!u || uid) return;
+  uid = u.uid;
+  onValue(ref(db, 'jugadores/' + uid), s => { yo = s.val(); yoCargado = true; pintar(); });
+  onValue(ref(db, 'juego'), s => { juego = s.val() || { estado: 'sala' }; seguir(); pintar(); });
+});
+onValue(ref(db, '.info/connected'), s => {
+  if (s.val()) conectado = true;
+  $('red').textContent = conectado && !s.val() ? 'Reconectando…' : '';
+});
+
+function seguir() {
+  const c = ['pregunta', 'respuesta', 'ranking'].includes(juego.estado) ? juego.clave : null;
+  if (c === clave) return;
+  offs.forEach(f => f()); offs = [];
+  clave = c; mia = null; resultado = null; enviando = false; rechazada = false;
+  if (c == null) return;
+  offs.push(onValue(ref(db, `respuestas/${c}/${uid}`), s => { mia = s.val(); pintar(); }));
+  offs.push(onValue(ref(db, `resultados/${c}`), s => { resultado = s.val(); pintar(); }));
+}
+
+function pintarPregunta() {
+  if (pintada === juego.clave) return;
+  pintada = juego.clave;
+  $('p-num').textContent = `Pregunta ${juego.pregunta + 1} de ${juego.total}${juego.doble ? ' · vale doble' : ''}`;
+  $('texto').textContent = juego.texto;
+  $('ops').innerHTML = juego.opciones.map((o, i) => `<button type="button" class="op op${i}" data-i="${i}">${icono(i)}<span>${esc(o)}</span></button>`).join('');
+}
+
+function pintar() {
+  if (!yoCargado || !juego) return;
+  if (!yo) return ver('nombre');
+  const e = juego.estado;
+  if (e === 'sala') { $('saludo').textContent = yo.nombre; return ver('espera'); }
+  if (e === 'final') {
+    $('f-puesto').textContent = yo.puesto ? `¡Quedaste de ${yo.puesto}.º!` : '¡Gracias por jugar!';
+    $('f-puntos').textContent = `${yo.puntos || 0} puntos`;
+    if (!festejo) { festejo = true; petalos($('petals'), 24); }
+    return ver('final');
+  }
+  if (e === 'pregunta') {
+    if (mia || enviando) return ver('listo');
+    if (rechazada || juego.inicio + juego.duracion - ahora() <= 0) return ver('tarde');
+    pintarPregunta();
+    return ver('pregunta');
+  }
+  const u = yo.ultima;
+  if (!u || u.pregunta !== juego.clave || !resultado) return ver(mia ? 'listo' : 'tarde');
+  $('r-titulo').textContent = u.correcta ? '¡Correcto!' : u.opcion < 0 ? 'Sin respuesta' : 'Ups…';
+  $('r-detalle').textContent = u.correcta ? `+${u.puntos} puntos` : `La respuesta era «${juego.opciones[resultado.correcta]}»`;
+  $('r-total').textContent = `${yo.puntos || 0} puntos · vas ${yo.puesto}.º de ${juego.jugadores}`;
+  ver('resultado');
+}
+
+$('ops').addEventListener('click', ev => {
+  const b = ev.target.closest('.op');
+  if (!b || enviando || mia) return;
+  enviando = true; pintar();
+  set(ref(db, `respuestas/${clave}/${uid}`), { opcion: +b.dataset.i, t: serverTimestamp() })
+    .catch(() => { enviando = false; rechazada = true; pintar(); });
+});
+
+$('form').addEventListener('submit', ev => {
+  ev.preventDefault();
+  const nombre = normalizar($('nombre').value);
+  if (!nombre) { $('err').textContent = 'Escribe tu nombre para jugar'; return; }
+  $('err').textContent = ''; $('entrar').disabled = true;
+  set(ref(db, 'jugadores/' + uid), { nombre, unido: serverTimestamp() })
+    .catch(() => { $('err').textContent = 'No se pudo entrar. Intenta de nuevo.'; })
+    .finally(() => { $('entrar').disabled = false; });
+});
+
+setInterval(() => {
+  if (!juego || juego.estado !== 'pregunta' || $('v-pregunta').hidden) return;
+  const resta = juego.inicio + juego.duracion - ahora();
+  $('seg').textContent = Math.max(0, Math.ceil(resta / 1000));
+  if (resta <= 0) pintar();
+}, 250);
+</script>
+</body>
+</html>
