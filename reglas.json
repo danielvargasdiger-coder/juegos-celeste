@@ -1,0 +1,41 @@
+{
+  "rules": {
+    "juego": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.uid === 'NDjw8ykXMzQ30rFEkP7xrRL3lEu1'"
+    },
+    "resultados": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.uid === 'NDjw8ykXMzQ30rFEkP7xrRL3lEu1'"
+    },
+    "jugadores": {
+      ".read": "auth != null",
+      ".write": "auth != null && auth.uid === 'NDjw8ykXMzQ30rFEkP7xrRL3lEu1'",
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid && !data.exists() && newData.child('unido').val() === now && !newData.child('puntos').exists() && !newData.child('tiempo').exists() && !newData.child('puesto').exists() && !newData.child('ultima').exists()",
+        ".validate": "newData.hasChildren(['nombre', 'unido'])",
+        "nombre": { ".validate": "newData.isString() && newData.val().length >= 1 && newData.val().length <= 20" },
+        "unido": { ".validate": "newData.isNumber()" },
+        "puntos": { ".validate": "newData.isNumber()" },
+        "tiempo": { ".validate": "newData.isNumber()" },
+        "puesto": { ".validate": "newData.isNumber()" },
+        "ultima": { ".validate": "newData.hasChildren(['pregunta', 'opcion', 'correcta', 'puntos'])" },
+        "$otro": { ".validate": false }
+      }
+    },
+    "respuestas": {
+      ".read": "auth != null && auth.uid === 'NDjw8ykXMzQ30rFEkP7xrRL3lEu1'",
+      ".write": "auth != null && auth.uid === 'NDjw8ykXMzQ30rFEkP7xrRL3lEu1'",
+      "$p": {
+        "$uid": {
+          ".read": "auth != null && auth.uid === $uid",
+          ".write": "auth != null && auth.uid === $uid && !data.exists() && root.child('jugadores/' + $uid).exists() && root.child('juego/estado').val() === 'pregunta' && root.child('juego/clave').val() === $p && now <= root.child('juego/inicio').val() + root.child('juego/duracion').val() + 1500",
+          ".validate": "newData.hasChildren(['opcion', 't']) && newData.child('t').val() === now",
+          "opcion": { ".validate": "newData.isNumber() && (newData.val() === 0 || newData.val() === 1 || newData.val() === 2 || newData.val() === 3)" },
+          "t": { ".validate": "newData.isNumber()" },
+          "$otro": { ".validate": false }
+        }
+      }
+    }
+  }
+}
