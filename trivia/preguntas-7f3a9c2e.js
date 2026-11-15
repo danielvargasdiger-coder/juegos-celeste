@@ -3,8 +3,9 @@
 export const PREGUNTAS = [
   { texto: '¿Quién va a cambiar más pañales?', opciones: ['Daniel', 'Ximena', 'La abuela', 'Se decide con piedra, papel o tijera'], correcta: 2 },
   { texto: '¿Cuál fue el antojo más raro de Ximena en el embarazo?', opciones: ['Sardinas con atún', 'Frijoles con kumis', 'Bon Yurt de Choco Krispis', 'Helado de atún'], correcta: 2 },
-  { texto: '¿Desde cuándo le salen lágrimas a un bebé cuando llora?', opciones: ['Desde el primer día', 'Entre el primer y el tercer mes', 'Al año', 'Cuando ve la cuenta de la clínica'], correcta: 1 },
-  { texto: '¿Cuántas veces al día come un recién nacido?', opciones: ['3, como todos', 'De 4 a 5', 'De 8 a 12', 'Las que diga la abuela'], correcta: 2 },
+  // foto: se muestra en el televisor al revelar la respuesta
+  { texto: '¿A quién se parece Celeste según la ecografía en 3D?', opciones: ['A Daniel', 'A Ximena', 'A ninguno', 'Al abuelo Octavio'], correcta: 3, foto: 'img/eco-3d-5e1b.jpg' },
+  { texto: 'En el embarazo, ¿qué es lo único de Daniel que Ximena no soporta?', opciones: ['Que ronque', 'Sus chistes malos', 'Su perfume: lo tiene prohibido', 'Que se coma sus antojos'], correcta: 2 },
   { texto: '¿Quién se demora más arreglándose para salir?', opciones: ['Daniel', 'Ximena', 'Empate técnico', 'Ya no salen: ahora tienen bebé'], correcta: 0 },
   { texto: '¿A qué edad le suele salir el primer diente a un bebé?', opciones: ['A los 2 meses', 'Hacia los 6 meses', 'Al año y medio', 'Cuando le sirvan el primer tamal'], correcta: 1 },
   { texto: '¿Quién se va a levantar a las 3 a. m. cuando Celeste llore?', opciones: ['Daniel', 'Ximena', 'El que tenga el sueño más liviano', 'Se van a hacer los dormidos'], correcta: 3 },
