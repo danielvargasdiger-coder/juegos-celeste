@@ -97,6 +97,25 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
 .brow .figs svg{flex:none;width:var(--s,56px);height:var(--s,56px);border-radius:12px;padding:2px}
 .brow .figs svg.last{background:var(--rose-soft);box-shadow:0 0 0 3px var(--rose)}
 .brow .figs .none{font-size:clamp(14px,2vh,20px);color:var(--muted)}
+button.lb{border:0;cursor:pointer;font:inherit;font-weight:700;transition:transform .15s}
+button.lb:hover{transform:scale(1.06)}
+
+/* Revisar una letra: todas sus fichas cantadas en grande */
+#lover{background:var(--paper)}
+.lbox{width:min(1700px,100%);height:100%;display:flex;flex-direction:column;gap:clamp(10px,2vh,22px)}
+.ltop{display:flex;align-items:center;gap:clamp(10px,1.4vw,20px);flex-wrap:wrap}
+.ltop h3{margin:0 auto 0 0;font-family:var(--display);font-weight:400;font-size:clamp(40px,7vh,80px);color:var(--rose);line-height:1}
+.ltabs{display:flex;gap:8px}
+.ltabs .lb{width:clamp(48px,7vh,72px);height:clamp(48px,7vh,72px);border-radius:14px;font-size:clamp(26px,4.4vh,44px);opacity:.45}
+.ltabs .lb:nth-child(even){background:var(--rose-alt)}
+.ltabs .lb[aria-pressed="true"]{opacity:1;box-shadow:0 0 0 4px var(--card),0 0 0 6px var(--rose)}
+.lgrid{flex:1;min-height:0;overflow:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(var(--t,180px),1fr));align-content:start;gap:clamp(8px,1.4vh,16px)}
+.lfig{position:relative;background:var(--card);border:1px solid rgba(230,163,182,.55);border-radius:20px;box-shadow:var(--marco);padding:8px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.lfig svg{width:72%;aspect-ratio:1;height:auto}
+.lfig span{font-family:var(--sans);font-weight:700;font-size:calc(var(--t,180px) * .12);line-height:1.15;text-align:center;color:var(--ink)}
+.lfig i{position:absolute;top:6px;left:10px;font-style:normal;font-family:var(--sans);font-weight:600;font-size:calc(var(--t,180px) * .085);color:var(--muted)}
+.lfig.last{background:var(--blush);box-shadow:0 0 0 3px var(--rose)}
+.lnone{font-family:var(--display);font-size:clamp(36px,6vh,64px);color:var(--muted);text-align:center;margin:auto}
 
 /* Barra del anfitrión: tenue en el televisor, se aclara al pasar el mouse */
 .hostbar{grid-column:1/-1;display:flex;gap:10px 14px;align-items:center;flex-wrap:nowrap;white-space:nowrap;min-width:0;opacity:.3;transition:opacity .2s}
@@ -493,6 +512,17 @@ h2{margin:0;font-size:clamp(14px,2vh,22px);letter-spacing:.24em;text-transform:u
   </div>
 </div>
 
+<div class="overlay" id="lover" hidden role="dialog" aria-modal="true" aria-labelledby="lTitle">
+  <div class="lbox">
+    <div class="ltop">
+      <h3 id="lTitle">Fichas de la B</h3>
+      <div class="ltabs" id="ltabs"></div>
+      <button class="btn ghost" id="lClose" type="button">Seguir jugando</button>
+    </div>
+    <div class="lgrid" id="lgrid"></div>
+  </div>
+</div>
+
 <script id="logic">
 const D = {"keys": ["coche", "tetero", "babero", "chupo", "sonajero", "panal", "osito", "patito", "body", "cuna", "medias", "zapatitos", "gorrito", "luna", "estrella", "corazon", "conejito", "globo", "movil", "huellitas", "lazo", "nube", "flor", "gancho", "banera", "cobija", "pastel", "bloques", "cepillo", "mariposa", "regalo"], "names": {"coche": "Coche", "tetero": "Tetero", "babero": "Babero", "chupo": "Chupo", "sonajero": "Sonajero", "panal": "Pañal", "osito": "Osito", "patito": "Patito", "body": "Body", "cuna": "Cuna", "medias": "Medias", "zapatitos": "Zapatitos", "gorrito": "Gorrito", "luna": "Lunita", "estrella": "Estrella", "corazon": "Corazón", "conejito": "Conejito", "globo": "Globo", "movil": "Móvil", "huellitas": "Huellitas", "lazo": "Lazo", "nube": "Nubecita", "flor": "Florcita", "gancho": "Gancho", "banera": "Bañera", "cobija": "Cobijita", "pastel": "Pastel", "bloques": "Bloques", "cepillo": "Cepillo", "mariposa": "Mariposa", "regalo": "Regalito"}, "cards": [["cuna", "coche", "corazon", "flor", "banera", "bloques", "nube", "huellitas", "panal", "zapatitos", "cobija", "estrella", "FREE", "osito", "chupo", "tetero", "patito", "body", "medias", "babero", "gorrito", "conejito", "gancho", "cepillo", "pastel"], ["bloques", "conejito", "pastel", "banera", "flor", "cepillo", "medias", "regalo", "sonajero", "zapatitos", "estrella", "nube", "FREE", "panal", "globo", "tetero", "luna", "coche", "movil", "body", "cobija", "corazon", "cuna", "gancho", "osito"], ["regalo", "mariposa", "cobija", "medias", "babero", "gancho", "osito", "chupo", "tetero", "luna", "lazo", "cepillo", "FREE", "estrella", "movil", "zapatitos", "huellitas", "corazon", "flor", "nube", "sonajero", "cuna", "conejito", "panal", "coche"], ["coche", "body", "sonajero", "cuna", "nube", "bloques", "lazo", "cepillo", "movil", "banera", "gancho", "medias", "FREE", "pastel", "globo", "panal", "huellitas", "mariposa", "conejito", "tetero", "estrella", "patito", "luna", "flor", "gorrito"], ["nube", "cepillo", "cobija", "flor", "movil", "gorrito", "huellitas", "chupo", "tetero", "luna", "estrella", "panal", "FREE", "sonajero", "osito", "globo", "body", "mariposa", "conejito", "coche", "regalo", "bloques", "pastel", "gancho", "zapatitos"], ["coche", "flor", "nube", "bloques", "chupo", "globo", "babero", "cobija", "osito", "huellitas", "patito", "cepillo", "FREE", "regalo", "body", "sonajero", "luna", "lazo", "gorrito", "panal", "mariposa", "tetero", "banera", "zapatitos", "estrella"], ["coche", "medias", "patito", "chupo", "gancho", "regalo", "conejito", "bloques", "corazon", "zapatitos", "lazo", "cepillo", "FREE", "globo", "nube", "flor", "cobija", "movil", "gorrito", "cuna", "pastel", "osito", "sonajero", "banera", "huellitas"], ["medias", "banera", "chupo", "estrella", "body", "nube", "osito", "tetero", "patito", "flor", "pastel", "babero", "FREE", "lazo", "zapatitos", "cuna", "panal", "luna", "huellitas", "gancho", "corazon", "bloques", "sonajero", "gorrito", "cobija"], ["osito", "corazon", "nube", "tetero", "globo", "estrella", "luna", "mariposa", "movil", "sonajero", "pastel", "panal", "FREE", "medias", "cobija", "flor", "bloques", "zapatitos", "gorrito", "banera", "coche", "cuna", "huellitas", "chupo", "babero"], ["zapatitos", "pastel", "estrella", "cuna", "bloques", "chupo", "tetero", "patito", "globo", "conejito", "flor", "cepillo", "FREE", "babero", "huellitas", "medias", "movil", "gorrito", "regalo", "body", "sonajero", "cobija", "lazo", "corazon", "banera"], ["gorrito", "gancho", "zapatitos", "tetero", "babero", "patito", "panal", "cepillo", "bloques", "cobija", "osito", "huellitas", "FREE", "medias", "flor", "sonajero", "lazo", "pastel", "nube", "luna", "body", "globo", "chupo", "conejito", "cuna"], ["chupo", "regalo", "conejito", "body", "banera", "gorrito", "cobija", "sonajero", "zapatitos", "flor", "corazon", "osito", "FREE", "globo", "medias", "mariposa", "gancho", "pastel", "cepillo", "patito", "huellitas", "cuna", "movil", "babero", "nube"], ["nube", "chupo", "cuna", "babero", "cepillo", "mariposa", "estrella", "corazon", "gancho", "zapatitos", "patito", "osito", "FREE", "regalo", "coche", "panal", "globo", "tetero", "huellitas", "medias", "lazo", "flor", "pastel", "conejito", "bloques"], ["zapatitos", "conejito", "gancho", "regalo", "sonajero", "pastel", "bloques", "globo", "tetero", "corazon", "body", "babero", "FREE", "flor", "mariposa", "cobija", "huellitas", "patito", "gorrito", "lazo", "coche", "chupo", "nube", "osito", "cuna"], ["chupo", "luna", "sonajero", "cuna", "flor", "panal", "estrella", "regalo", "coche", "nube", "bloques", "cobija", "FREE", "corazon", "babero", "huellitas", "body", "banera", "gorrito", "movil", "patito", "lazo", "medias", "conejito", "mariposa"], ["nube", "luna", "bloques", "corazon", "mariposa", "osito", "gancho", "sonajero", "conejito", "regalo", "coche", "chupo", "FREE", "movil", "cepillo", "estrella", "huellitas", "globo", "medias", "gorrito", "cobija", "flor", "cuna", "babero", "pastel"], ["nube", "body", "banera", "pastel", "estrella", "sonajero", "chupo", "bloques", "lazo", "zapatitos", "movil", "cuna", "FREE", "coche", "globo", "patito", "babero", "regalo", "cepillo", "corazon", "mariposa", "tetero", "conejito", "gorrito", "flor"], ["globo", "bloques", "tetero", "movil", "flor", "conejito", "regalo", "body", "medias", "babero", "banera", "estrella", "FREE", "cobija", "pastel", "cepillo", "luna", "sonajero", "gancho", "zapatitos", "gorrito", "lazo", "patito", "nube", "cuna"], ["tetero", "gancho", "gorrito", "corazon", "nube", "huellitas", "patito", "cobija", "bloques", "regalo", "panal", "banera", "FREE", "cuna", "zapatitos", "mariposa", "medias", "cepillo", "coche", "conejito", "luna", "babero", "movil", "sonajero", "globo"], ["gancho", "banera", "body", "zapatitos", "cobija", "chupo", "bloques", "regalo", "gorrito", "tetero", "estrella", "nube", "FREE", "lazo", "globo", "coche", "osito", "luna", "flor", "conejito", "babero", "corazon", "panal", "cuna", "huellitas"], ["estrella", "osito", "panal", "sonajero", "globo", "patito", "regalo", "banera", "gorrito", "gancho", "movil", "body", "FREE", "corazon", "tetero", "pastel", "cepillo", "nube", "flor", "babero", "cobija", "luna", "mariposa", "bloques", "chupo"], ["corazon", "cobija", "sonajero", "zapatitos", "gancho", "coche", "luna", "lazo", "bloques", "cuna", "gorrito", "panal", "FREE", "chupo", "babero", "movil", "pastel", "medias", "banera", "patito", "flor", "osito", "tetero", "body", "nube"], ["zapatitos", "estrella", "osito", "sonajero", "panal", "huellitas", "chupo", "globo", "patito", "coche", "tetero", "gancho", "FREE", "corazon", "babero", "bloques", "cuna", "cobija", "flor", "movil", "conejito", "medias", "lazo", "body", "mariposa"], ["mariposa", "regalo", "cepillo", "corazon", "panal", "bloques", "sonajero", "cobija", "pastel", "huellitas", "nube", "cuna", "FREE", "tetero", "medias", "luna", "banera", "conejito", "globo", "zapatitos", "coche", "chupo", "patito", "flor", "movil"], ["lazo", "babero", "bloques", "chupo", "movil", "medias", "conejito", "mariposa", "sonajero", "flor", "huellitas", "cepillo", "FREE", "regalo", "globo", "cobija", "panal", "gancho", "patito", "pastel", "estrella", "body", "corazon", "cuna", "zapatitos"], ["mariposa", "tetero", "gancho", "cuna", "bloques", "nube", "luna", "lazo", "corazon", "estrella", "zapatitos", "coche", "FREE", "huellitas", "body", "osito", "patito", "flor", "panal", "movil", "cobija", "medias", "banera", "globo", "regalo"], ["estrella", "cobija", "osito", "flor", "conejito", "regalo", "movil", "panal", "tetero", "sonajero", "lazo", "bloques", "FREE", "cuna", "medias", "corazon", "globo", "zapatitos", "babero", "huellitas", "chupo", "body", "cepillo", "patito", "gorrito"], ["babero", "panal", "conejito", "gorrito", "bloques", "cuna", "huellitas", "osito", "lazo", "mariposa", "estrella", "movil", "FREE", "zapatitos", "pastel", "cobija", "tetero", "corazon", "flor", "body", "globo", "luna", "coche", "sonajero", "nube"], ["movil", "bloques", "babero", "nube", "cobija", "regalo", "corazon", "osito", "chupo", "luna", "huellitas", "medias", "FREE", "zapatitos", "gancho", "lazo", "cepillo", "conejito", "tetero", "flor", "body", "patito", "mariposa", "cuna", "estrella"], ["gancho", "patito", "osito", "chupo", "medias", "movil", "coche", "flor", "globo", "cuna", "tetero", "banera", "FREE", "zapatitos", "nube", "body", "regalo", "bloques", "pastel", "mariposa", "conejito", "luna", "sonajero", "huellitas", "estrella"], ["lazo", "zapatitos", "cuna", "nube", "regalo", "globo", "gancho", "mariposa", "medias", "osito", "coche", "tetero", "FREE", "huellitas", "banera", "patito", "luna", "pastel", "gorrito", "flor", "panal", "sonajero", "babero", "conejito", "corazon"], ["gancho", "osito", "nube", "medias", "corazon", "gorrito", "cuna", "luna", "coche", "zapatitos", "huellitas", "chupo", "FREE", "tetero", "regalo", "cepillo", "patito", "lazo", "flor", "cobija", "babero", "movil", "estrella", "bloques", "mariposa"], ["panal", "zapatitos", "cepillo", "tetero", "banera", "bloques", "lazo", "corazon", "patito", "conejito", "globo", "chupo", "FREE", "cobija", "babero", "regalo", "body", "flor", "pastel", "nube", "mariposa", "gancho", "gorrito", "movil", "estrella"], ["luna", "mariposa", "gorrito", "movil", "gancho", "conejito", "chupo", "huellitas", "patito", "nube", "body", "flor", "FREE", "coche", "tetero", "cepillo", "bloques", "zapatitos", "globo", "regalo", "estrella", "babero", "osito", "panal", "banera"], ["nube", "gancho", "pastel", "zapatitos", "sonajero", "flor", "cepillo", "osito", "lazo", "movil", "patito", "corazon", "FREE", "chupo", "estrella", "regalo", "medias", "coche", "mariposa", "cobija", "banera", "cuna", "luna", "huellitas", "conejito"], ["conejito", "pastel", "globo", "body", "patito", "babero", "osito", "cobija", "cepillo", "huellitas", "zapatitos", "estrella", "FREE", "flor", "gorrito", "movil", "lazo", "panal", "banera", "bloques", "luna", "mariposa", "chupo", "nube", "medias"], ["osito", "pastel", "conejito", "patito", "zapatitos", "bloques", "panal", "luna", "cobija", "body", "mariposa", "gancho", "FREE", "flor", "babero", "medias", "gorrito", "coche", "globo", "lazo", "cuna", "movil", "estrella", "sonajero", "chupo"], ["gorrito", "zapatitos", "pastel", "osito", "coche", "sonajero", "conejito", "huellitas", "estrella", "cepillo", "chupo", "banera", "FREE", "bloques", "nube", "cuna", "babero", "gancho", "movil", "globo", "tetero", "lazo", "corazon", "patito", "medias"], ["lazo", "huellitas", "flor", "pastel", "gorrito", "coche", "patito", "chupo", "tetero", "mariposa", "luna", "cepillo", "FREE", "nube", "medias", "estrella", "osito", "globo", "bloques", "conejito", "sonajero", "regalo", "cobija", "corazon", "zapatitos"], ["cuna", "panal", "osito", "babero", "gorrito", "luna", "pastel", "cepillo", "medias", "movil", "conejito", "zapatitos", "FREE", "banera", "flor", "mariposa", "huellitas", "regalo", "bloques", "tetero", "nube", "coche", "body", "patito", "chupo"], ["nube", "mariposa", "regalo", "chupo", "flor", "sonajero", "patito", "movil", "cepillo", "body", "panal", "tetero", "FREE", "conejito", "banera", "gancho", "cobija", "babero", "globo", "cuna", "zapatitos", "estrella", "lazo", "gorrito", "bloques"], ["conejito", "panal", "corazon", "bloques", "gancho", "cobija", "lazo", "regalo", "pastel", "cepillo", "cuna", "medias", "FREE", "body", "mariposa", "gorrito", "coche", "osito", "banera", "patito", "luna", "zapatitos", "chupo", "tetero", "huellitas"], ["sonajero", "movil", "conejito", "zapatitos", "osito", "banera", "body", "cobija", "corazon", "patito", "bloques", "luna", "FREE", "globo", "mariposa", "nube", "gorrito", "flor", "babero", "gancho", "tetero", "coche", "lazo", "cuna", "huellitas"], ["cobija", "nube", "panal", "conejito", "gancho", "sonajero", "cuna", "lazo", "flor", "movil", "chupo", "regalo", "FREE", "mariposa", "tetero", "pastel", "gorrito", "estrella", "luna", "patito", "osito", "globo", "corazon", "coche", "banera"], ["corazon", "coche", "flor", "medias", "zapatitos", "lazo", "panal", "huellitas", "regalo", "movil", "mariposa", "cepillo", "FREE", "bloques", "nube", "pastel", "estrella", "chupo", "gorrito", "globo", "tetero", "banera", "patito", "luna", "gancho"], ["tetero", "body", "bloques", "osito", "cepillo", "babero", "gancho", "luna", "movil", "cuna", "conejito", "banera", "FREE", "coche", "panal", "patito", "nube", "regalo", "cobija", "mariposa", "lazo", "chupo", "medias", "globo", "pastel"], ["panal", "luna", "huellitas", "cuna", "lazo", "patito", "mariposa", "gancho", "conejito", "banera", "chupo", "sonajero", "FREE", "flor", "osito", "medias", "babero", "estrella", "cobija", "bloques", "tetero", "pastel", "corazon", "zapatitos", "regalo"], ["tetero", "banera", "nube", "zapatitos", "body", "medias", "conejito", "pastel", "coche", "estrella", "panal", "movil", "FREE", "gorrito", "cepillo", "babero", "cobija", "bloques", "cuna", "lazo", "sonajero", "corazon", "mariposa", "gancho", "huellitas"], ["movil", "panal", "flor", "globo", "bloques", "cuna", "estrella", "regalo", "body", "gorrito", "mariposa", "lazo", "FREE", "coche", "pastel", "corazon", "zapatitos", "banera", "medias", "luna", "cobija", "conejito", "chupo", "babero", "huellitas"], ["globo", "nube", "osito", "estrella", "conejito", "bloques", "patito", "medias", "coche", "lazo", "huellitas", "sonajero", "FREE", "babero", "flor", "body", "corazon", "regalo", "zapatitos", "gorrito", "movil", "gancho", "cepillo", "tetero", "cobija"], ["conejito", "panal", "gancho", "mariposa", "cepillo", "zapatitos", "pastel", "chupo", "estrella", "cobija", "corazon", "cuna", "FREE", "flor", "luna", "sonajero", "lazo", "nube", "regalo", "movil", "huellitas", "patito", "coche", "osito", "gorrito"], ["luna", "mariposa", "corazon", "sonajero", "zapatitos", "movil", "globo", "medias", "flor", "coche", "patito", "cepillo", "FREE", "huellitas", "pastel", "banera", "lazo", "babero", "conejito", "cobija", "gancho", "regalo", "tetero", "osito", "estrella"], ["mariposa", "osito", "babero", "cobija", "banera", "panal", "globo", "coche", "patito", "nube", "chupo", "cepillo", "FREE", "zapatitos", "bloques", "body", "conejito", "regalo", "gancho", "estrella", "flor", "medias", "pastel", "tetero", "sonajero"], ["medias", "estrella", "cuna", "huellitas", "cepillo", "bloques", "tetero", "banera", "osito", "globo", "regalo", "mariposa", "FREE", "gorrito", "coche", "zapatitos", "flor", "sonajero", "patito", "corazon", "luna", "panal", "cobija", "movil", "gancho"], ["sonajero", "corazon", "pastel", "nube", "lazo", "flor", "body", "gorrito", "regalo", "banera", "bloques", "cobija", "FREE", "tetero", "osito", "zapatitos", "luna", "estrella", "coche", "chupo", "panal", "cuna", "babero", "gancho", "globo"]]};
 const KEYS = D.keys, NAMES = D.names, CARDS = D.cards;
@@ -587,7 +617,7 @@ function renderBoard() {
     const figs = mine.length
       ? mine.map(b => { const k = split(b).k; return `<svg class="${b === last ? 'last' : ''}" role="img" aria-label="${L} ${NAMES[k]}"><title>${L} · ${NAMES[k]}</title><use href="#i-${k}"></use></svg>`; }).join('')
       : `<span class="none">Aún no sale ninguna</span>`;
-    return `<div class="brow"><span class="lb">${L}</span><div class="figs">${figs}</div></div>`;
+    return `<div class="brow"><button type="button" class="lb" data-l="${L}" title="Ver en grande las fichas de la ${L} (tecla ${L})">${L}</button><div class="figs">${figs}</div></div>`;
   }).join('');
   $('count').textContent = `${state.drawn.length} de ${TOTAL}`;
   fitBoard();
@@ -598,6 +628,27 @@ function renderBoard() {
   $('undoBtn').disabled = state.drawn.length === 0;
   renderHost();
 }
+
+/* Revisar una letra: sus fichas cantadas en grande, en el orden en que salieron */
+function openLetter(L) {
+  const last = state.drawn[state.drawn.length - 1];
+  const mine = state.drawn.filter(b => b[0] === L);
+  $('lTitle').textContent = `Fichas de la ${L} · ${mine.length}`;
+  $('ltabs').innerHTML = COLS.map(x => `<button type="button" class="lb" data-l="${x}" aria-pressed="${x === L}">${x}</button>`).join('');
+  $('lgrid').innerHTML = mine.length
+    ? mine.map(b => { const k = split(b).k; return `<div class="lfig${b === last ? ' last' : ''}"><i>${state.drawn.indexOf(b) + 1}</i>${icon(k)}<span>${NAMES[k]}</span></div>`; }).join('')
+    : `<p class="lnone">Aún no sale ninguna ficha con la ${L}</p>`;
+  $('lover').hidden = false;
+  fitLetter();
+}
+function fitLetter() {
+  // El tamaño más grande con el que todas las fichas de la letra caben sin desplazarse (se mide de verdad).
+  const g = $('lgrid');
+  if (!g.querySelector('.lfig') || $('lover').hidden) return;
+  let t = 440;
+  do { g.style.setProperty('--t', t + 'px'); t -= 6; } while (t > 80 && g.scrollHeight > g.clientHeight + 1);
+}
+function closeLetter() { $('lover').hidden = true; document.activeElement?.blur(); }
 
 function showBig(b, land) {
   const big = $('big');
@@ -789,7 +840,11 @@ function bind() {
   });
   document.addEventListener('fullscreenchange', () => { $('fsBtn').textContent = document.fullscreenElement ? 'Salir de pantalla completa' : 'Pantalla completa'; });
   $('patSel').addEventListener('change', e => { state.pattern = e.target.value; save(); renderPatterns(); renderHost(); e.target.blur(); });
-  addEventListener('resize', fitBoard);
+  addEventListener('resize', () => { fitBoard(); fitLetter(); });
+  $('board').addEventListener('click', e => { const b = e.target.closest('button.lb'); if (b) openLetter(b.dataset.l); });
+  $('ltabs').addEventListener('click', e => { const b = e.target.closest('button.lb'); if (b) openLetter(b.dataset.l); });
+  $('lClose').addEventListener('click', closeLetter);
+  $('lover').addEventListener('click', e => { if (e.target.id === 'lover') closeLetter(); });
   $('vform').addEventListener('submit', e => {
     e.preventDefault();
     const {nums, bad} = parseNums($('cardNum').value);
@@ -823,7 +878,14 @@ function bind() {
   document.addEventListener('keydown', e => {
     if (!$('overlay').hidden) { if (e.key === 'Escape') closeOverlay(); return; }
     const tag = (e.target.tagName || '').toLowerCase();
-    if (tag === 'input' || tag === 'button' || tag === 'select') return;
+    if (tag === 'input' || tag === 'select') return;
+    const letra = e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey ? e.key.toUpperCase() : '';
+    if (!$('lover').hidden) {                                   // revisando una letra: B I N G O cambian de letra, Escape cierra
+      if (e.key === 'Escape') closeLetter(); else if (COLS.includes(letra)) openLetter(letra);
+      return;
+    }
+    if (COLS.includes(letra)) { openLetter(letra); return; }
+    if (tag === 'button') return;
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); draw(); }
   });
 }
