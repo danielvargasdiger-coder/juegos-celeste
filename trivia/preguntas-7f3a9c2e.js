@@ -10,7 +10,7 @@ export const PREGUNTAS = [
   { texto: '¿A qué edad le suele salir el primer diente a un bebé?', opciones: ['A los 2 meses', 'Hacia los 6 meses', 'Al año y medio', 'Cuando le sirvan el primer tamal'], correcta: 1 },
   { texto: '¿Quién se va a levantar a las 3 a. m. cuando Celeste llore?', opciones: ['Daniel', 'Ximena', 'El que tenga el sueño más liviano', 'Se van a hacer los dormidos'], correcta: 3 },
   { texto: '¿Qué significa el nombre Celeste?', opciones: ['Del cielo', 'Pequeña estrella', 'Luz del mar', 'Princesa de las nubes'], correcta: 0 },
-  { texto: '¿Qué otro nombre casi le ponen?', opciones: ['Rosaly', 'Isabella', 'Luciana', 'Emilia'], correcta: 0 },
+  { texto: '¿Qué otro nombre casi le ponen?', opciones: ['Rosa Ly', 'Isabella', 'Luciana', 'Emilia'], correcta: 0 },
   { texto: '¿Qué fue lo primero que compraron para Celeste?', opciones: ['Unas mediecitas', 'Un body', 'Un osito de peluche', 'La cuna'], correcta: 0 },
   { texto: '¿Qué va a ser lo primero que Daniel le enseñe?', opciones: ['A decir «papá» antes que «mamá»', 'A programar', 'A bailar', 'A pedir domicilios'], correcta: 0 },
   { texto: '¿Cuántos pañales usa un bebé en su primer año?', opciones: ['Unos 500', 'Unos 1.000', 'Unos 2.500', 'Unos 10.000'], correcta: 2 },
