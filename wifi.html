@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Wifi del salón</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="robots" content="noindex">
+<link rel="stylesheet" href="estilo.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  main{max-width:1500px;min-height:100svh;margin:0 auto;padding:clamp(20px,4vh,40px) 18px clamp(90px,17vh,170px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(16px,3vh,32px);text-align:center}
+  .corner{position:fixed;width:min(40vw,260px);top:-8px;z-index:-1}
+  .corner.l{left:-18px}
+  .corner.r{right:-18px;transform:scaleX(-1)}
+  h1.script{font-size:clamp(3.4rem,9vw,6.5rem)}
+  .wifi{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;width:100%}
+  .qr{background:var(--card);padding:clamp(14px,2vh,24px);border-radius:30px;border:1px solid rgba(230,163,182,.4);box-shadow:0 18px 40px -28px rgba(154,90,112,.55)}
+  .qr img,.qr canvas{width:clamp(220px,46vh,480px)!important;height:auto!important;display:block}
+  .datos{display:flex;flex-direction:column;gap:clamp(10px,2vh,22px)}
+  .datos .card{padding:clamp(18px,3vh,32px) 22px}
+  .datos .kicker{font-size:clamp(.8rem,1.6vh,1.05rem)}
+  .valor{font-family:var(--serif);font-weight:600;color:var(--rose-ink);font-size:clamp(2.2rem,7vh,4.6rem);line-height:1.1;letter-spacing:.04em;overflow-wrap:anywhere;font-variant-numeric:lining-nums}
+  .lead{font-size:clamp(1.15rem,2.6vh,1.6rem)}
+  .volver{opacity:.3;transition:opacity .2s}
+  .volver:hover,.volver:focus-visible{opacity:1}
+  @media (max-width:760px){.valor{font-size:clamp(1.6rem,8.5vw,2.6rem);white-space:nowrap}.datos{width:100%}.wifi{grid-template-columns:minmax(0,1fr);justify-items:center}.qr img,.qr canvas{width:min(70vw,320px)!important}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"></div>
+<div class="petals" id="petals" aria-hidden="true"></div>
+<img class="corner l blend" src="img/ramo.jpg" alt="">
+<img class="corner r blend" src="img/ramo.jpg" alt="">
+<main>
+  <div>
+    <p class="kicker">Baby Shower de Celeste</p>
+    <h1 class="script">Wifi del salón</h1>
+  </div>
+  <div class="wifi">
+    <div class="qr"><div id="qr" role="img" aria-label="Código QR para conectarse al wifi"></div></div>
+    <div class="datos">
+      <p class="lead">Escanea el código con la cámara del celular para conectarte, o escribe estos datos:</p>
+      <div class="card"><p class="kicker">Nombre de la red</p><p class="valor" id="red"></p></div>
+      <div class="card"><p class="kicker">Contraseña</p><p class="valor" id="clave"></p></div>
+    </div>
+  </div>
+  <a class="btn ghost volver" href="./">Volver a los juegos</a>
+</main>
+<div class="prado" aria-hidden="true"></div>
+<script type="module">
+import { petalos } from './petalos.js';
+const RED = 'SALON-SOCIAL', CLAVE = '901009930';
+const esc = s => s.replace(/([\\;,:"])/g, '\\$1');   // formato estándar de QR de wifi
+document.getElementById('red').textContent = RED;
+document.getElementById('clave').textContent = CLAVE;
+new QRCode(document.getElementById('qr'), { text: `WIFI:T:WPA;S:${esc(RED)};P:${esc(CLAVE)};;`, width: 480, height: 480, colorDark: '#9a5a70', colorLight: '#fefcf8', correctLevel: QRCode.CorrectLevel.M });
+petalos(document.getElementById('petals'));
+</script>
+</body>
+</html>
