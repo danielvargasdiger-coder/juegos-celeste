@@ -120,13 +120,16 @@ let enviando = null, rechazada = false, pintada = null, conectado = false, feste
 petalos($('petals'), 10);
 const miAvatar = selectorAvatar($('avatar'));
 
-signInAnonymously(auth).catch(e => {
+// Solo se crea una sesión anónima si no hay ninguna: así abrir esta página en el computador del anfitrión
+// no le cierra la sesión de Google de la pantalla del televisor.
+const entrarAnonimo = () => signInAnonymously(auth).catch(e => {
   $('red').textContent = e.code === 'auth/too-many-requests'
     ? 'Se llenó el cupo de conexiones nuevas. Avísale al anfitrión.'
     : 'No pudimos conectarte. Revisa tus datos móviles y recarga la página.';
 });
 onAuthStateChanged(auth, u => {
-  if (!u || uid) return;
+  if (!u) return void entrarAnonimo();
+  if (uid) return;
   uid = u.uid;
   onValue(R('jugadores/' + uid), s => { yo = s.val(); yoCargado = true; pintar(); });
   onValue(R('juego'), s => { juego = s.val() || { estado: 'sala' }; seguir(); pintar(); });

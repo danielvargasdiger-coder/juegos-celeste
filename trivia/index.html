@@ -110,13 +110,16 @@ let enviando = false, rechazada = false, pintada = null, conectado = false, fest
 petalos($('petals'), 10);
 const miAvatar = selectorAvatar($('avatar'));
 
-signInAnonymously(auth).catch(e => {
+// Solo se crea una sesión anónima si no hay ninguna: así abrir esta página en el computador del anfitrión
+// no le cierra la sesión de Google de la pantalla del televisor.
+const entrarAnonimo = () => signInAnonymously(auth).catch(e => {
   $('red').textContent = e.code === 'auth/too-many-requests'
     ? 'Se llenó el cupo de conexiones nuevas. Avísale al anfitrión.'   // recargar no ayuda: es el límite de cuentas anónimas de Firebase
     : 'No pudimos conectarte. Revisa tus datos móviles y recarga la página.';
 });
 onAuthStateChanged(auth, u => {
-  if (!u || uid) return;
+  if (!u) return void entrarAnonimo();
+  if (uid) return;
   uid = u.uid;
   onValue(ref(db, 'jugadores/' + uid), s => { yo = s.val(); yoCargado = true; pintar(); });
   onValue(ref(db, 'juego'), s => { juego = s.val() || { estado: 'sala' }; seguir(); pintar(); });
