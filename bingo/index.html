@@ -118,7 +118,8 @@ button.lb:hover{transform:scale(1.06)}
 .lnone{font-family:var(--display);font-size:clamp(36px,6vh,64px);color:var(--muted);text-align:center;margin:auto}
 
 /* Barra del anfitrión: tenue en el televisor, se aclara al pasar el mouse */
-.hostbar{grid-column:1/-1;display:flex;gap:10px 14px;align-items:center;flex-wrap:nowrap;white-space:nowrap;min-width:0;opacity:.3;transition:opacity .2s}
+.hostbar{grid-column:1/-1;display:flex;gap:10px 14px;align-items:center;flex-wrap:wrap;min-width:0;opacity:.3;transition:opacity .2s}
+.hostbar>*,.hostbar label,.hostbar .btn{white-space:nowrap}  /* con zoom la barra pasa a dos líneas en vez de cortarse */
 .hostbar:hover,.hostbar:has(:focus-visible),.hostbar:has(.confirm),.hostbar:has(.err:not([hidden])){opacity:1}
 .btn{border:0;border-radius:999px;min-height:44px;padding:8px 22px;font-size:clamp(15px,1.9vh,19px);font-weight:600;letter-spacing:.05em;transition:transform .2s}
 .btn.primary{background:linear-gradient(135deg,#e39ab0,#c46f8b);color:#fff;box-shadow:0 10px 20px -10px rgba(180,95,125,.85)}
