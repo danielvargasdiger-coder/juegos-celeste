@@ -138,13 +138,8 @@ button.lb:hover{transform:scale(1.06)}
 .link{background:none;border:0;color:var(--muted);font-weight:700;font-size:15px;text-decoration:underline;text-underline-offset:3px;min-height:44px;padding:0 4px}
 .confirm{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-weight:700}
 .confirm .btn{min-height:40px;padding:6px 14px;font-size:16px}
-.hostbar:has(.host:not([hidden])){opacity:1}
-/* «Ver cartones con bingo»: tarjeta propia sobre la barra, con los números grandes (antes estiraba la barra) */
-.host{position:fixed;z-index:15;left:50%;bottom:clamp(64px,9vh,100px);transform:translateX(-50%);width:max-content;max-width:min(1500px,calc(100vw - 32px));max-height:42vh;overflow:auto;
-  background:var(--card);border:1px solid rgba(230,163,182,.55);border-radius:24px;box-shadow:var(--marco),0 20px 50px -20px rgba(154,90,112,.5);padding:clamp(12px,1.8vh,20px) clamp(16px,1.8vw,28px);
-  white-space:normal!important;text-align:center;font-size:clamp(16px,2.2vh,24px);color:var(--ink);font-weight:600}
-.host .nums{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:10px}
-.host .nums b{display:inline-flex;align-items:center;justify-content:center;min-width:2.2em;height:2.2em;padding:0 .4em;border-radius:999px;background:var(--rose);color:#fff;font-variant-numeric:tabular-nums}
+.host{order:99;flex-basis:100%;white-space:normal!important;font-size:12px;line-height:1.35;color:var(--muted);font-weight:600;max-height:2.8em;overflow:auto}  /* solo para el anfitrión: discreto, al pie de la barra tenue */
+.host b{color:var(--ink);font-variant-numeric:tabular-nums}
 
 /* Estilo de la invitación: textos de interfaz en Quicksand y pétalos cayendo */
 .kicker,h2,.btn,.link,.hostbar,.chip,.prev .t,.ptitle .n,.round .hint,.big .label,.big .rule,.badge,.claim,.err,.host,.verdict p,.vc span,.brow .figs .none{font-family:var(--sans)}
@@ -824,9 +819,8 @@ function renderHost() {
   const w = winners(state.drawn, state.pattern);
   const name = PATTERNS.find(p => p.id === state.pattern).name;
   out.innerHTML = w.length
-    ? `Con la figura «${name}» ${w.length === 1 ? 'tiene' : 'tienen'} bingo ${w.length === 1 ? 'el cartón' : `${w.length} cartones`}:<div class="nums">${w.map(n => `<b>${n}</b>`).join('')}</div>`
-    : `Con la figura «${name}», ningún cartón tiene bingo todavía.`;
-  out.style.bottom = (innerHeight - document.querySelector('.hostbar').getBoundingClientRect().top + 10) + 'px';   // siempre justo encima de la barra
+    ? `${name} · con bingo: <b>${w.join(', ')}</b>`
+    : `${name} · ningún cartón tiene bingo todavía`;
 }
 
 function parseNums(s) {
@@ -847,7 +841,7 @@ function bind() {
   });
   document.addEventListener('fullscreenchange', () => { $('fsBtn').textContent = document.fullscreenElement ? 'Salir de pantalla completa' : 'Pantalla completa'; });
   $('patSel').addEventListener('change', e => { state.pattern = e.target.value; save(); renderPatterns(); renderHost(); e.target.blur(); });
-  addEventListener('resize', () => { fitBoard(); fitLetter(); renderHost(); });
+  addEventListener('resize', () => { fitBoard(); fitLetter(); });
   $('board').addEventListener('click', e => { const b = e.target.closest('button.lb'); if (b) openLetter(b.dataset.l); });
   $('ltabs').addEventListener('click', e => { const b = e.target.closest('button.lb'); if (b) openLetter(b.dataset.l); });
   $('lClose').addEventListener('click', closeLetter);
