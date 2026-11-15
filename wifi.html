@@ -11,22 +11,33 @@
 <link rel="stylesheet" href="estilo.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 <style>
-  main{max-width:1600px;min-height:100svh;margin:0 auto;padding:clamp(12px,2.5vh,30px) 18px clamp(40px,8vh,110px);display:flex;flex-direction:column;justify-content:center;align-items:center;gap:clamp(16px,3vh,32px);text-align:center}
+  main{max-width:1700px;min-height:100svh;margin:0 auto;padding:clamp(16px,3vh,36px) 18px;display:flex;flex-direction:column;justify-content:center;align-items:center}
   .corner{position:fixed;width:min(40vw,260px);top:-8px;z-index:-1}
   .corner.l{left:-18px}
   .corner.r{right:-18px;transform:scaleX(-1)}
-  h1.script{font-size:clamp(3rem,min(9vw,10vh),6rem)}
-  .wifi{display:grid;grid-template-columns:auto minmax(0,1fr);gap:clamp(24px,4vw,64px);align-items:center;width:100%}
-  .qr{background:var(--card);padding:clamp(14px,2vh,24px);border-radius:30px;border:1px solid rgba(230,163,182,.4);box-shadow:0 18px 40px -28px rgba(154,90,112,.55)}
-  .qr img,.qr canvas{width:clamp(260px,57vh,680px)!important;height:auto!important;display:block}
-  .datos{display:flex;flex-direction:column;gap:clamp(10px,2vh,22px)}
-  .datos .card{padding:clamp(18px,3vh,32px) 22px}
-  .datos .kicker{font-size:clamp(.8rem,1.6vh,1.05rem)}
-  .valor{font-family:var(--serif);font-weight:600;color:var(--rose-ink);font-size:clamp(2.2rem,7vh,4.6rem);line-height:1.1;letter-spacing:.04em;overflow-wrap:anywhere;font-variant-numeric:lining-nums}
-  .lead{font-size:clamp(1.15rem,2.6vh,1.6rem)}
-  .volver{opacity:.3;transition:opacity .2s}
+  /* Televisor: QR a la izquierda a todo lo alto; a la derecha el título grande, el mensaje y los datos */
+  .wifi{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"qr cab" "qr datos";column-gap:clamp(28px,4vw,72px);row-gap:clamp(10px,2vh,24px);align-items:center;width:100%;text-align:center}
+  .cab{grid-area:cab;align-self:end}
+  .cab .kicker{font-size:clamp(.9rem,1.9vh,1.3rem)}
+  h1.script{font-size:clamp(4rem,min(16vh,7.4vw),11rem);line-height:1.05;white-space:nowrap}
+  .qr{grid-area:qr;background:var(--card);padding:clamp(14px,2vh,24px);border-radius:30px;border:1px solid rgba(230,163,182,.4);box-shadow:0 18px 40px -28px rgba(154,90,112,.55)}
+  .qr img,.qr canvas{width:clamp(260px,min(70vh,40vw),760px)!important;height:auto!important;display:block}
+  .datos{grid-area:datos;align-self:start;display:flex;flex-direction:column;gap:clamp(10px,2vh,22px)}
+  .datos .card{padding:clamp(16px,2.6vh,30px) 22px}
+  .datos .kicker{font-size:clamp(.85rem,1.7vh,1.15rem)}
+  .valor{font-family:var(--serif);font-weight:600;color:var(--rose-ink);font-size:clamp(2.2rem,7vh,4.8rem);line-height:1.1;letter-spacing:.04em;overflow-wrap:anywhere;font-variant-numeric:lining-nums}
+  .lead{font-size:clamp(1.3rem,3.4vh,2.3rem);line-height:1.35;color:var(--rose-ink)}
+  .volver{position:fixed;left:50%;bottom:14px;transform:translateX(-50%);opacity:.3;transition:opacity .2s}
   .volver:hover,.volver:focus-visible{opacity:1}
-  @media (max-width:760px){.valor{font-size:clamp(1.6rem,8.5vw,2.6rem);white-space:nowrap}.datos{width:100%}.wifi{grid-template-columns:minmax(0,1fr);justify-items:center}.qr img,.qr canvas{width:min(70vw,320px)!important}}
+  @media (max-width:760px){
+    .wifi{grid-template-columns:minmax(0,1fr);grid-template-areas:"cab" "qr" "datos";justify-items:center}
+    h1.script{font-size:clamp(3.2rem,16vw,4.6rem)}
+    .qr img,.qr canvas{width:min(70vw,320px)!important}
+    .datos{width:100%}
+    .valor{font-size:clamp(1.6rem,8.5vw,2.6rem);white-space:nowrap}
+    .volver{position:static;transform:none;margin-top:20px}
+    main{padding-bottom:clamp(90px,17vh,170px)}
+  }
 </style>
 </head>
 <body>
@@ -35,14 +46,14 @@
 <img class="corner l blend" src="img/ramo.jpg" alt="">
 <img class="corner r blend" src="img/ramo.jpg" alt="">
 <main>
-  <div>
-    <p class="kicker">Baby Shower de Celeste</p>
-    <h1 class="script">Wifi del salón</h1>
-  </div>
   <div class="wifi">
+    <div class="cab">
+      <p class="kicker">Baby Shower de Celeste</p>
+      <h1 class="script">Wifi del salón</h1>
+    </div>
     <div class="qr"><div id="qr" role="img" aria-label="Código QR para conectarse al wifi"></div></div>
     <div class="datos">
-      <p class="lead">Escanea el código con la cámara del celular para conectarte, o escribe estos datos:</p>
+      <p class="lead">Escanea el código con la cámara de tu celular, o escribe estos datos:</p>
       <div class="card"><p class="kicker">Nombre de la red</p><p class="valor" id="red"></p></div>
       <div class="card"><p class="kicker">Contraseña</p><p class="valor" id="clave"></p></div>
     </div>
